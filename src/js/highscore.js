@@ -1,7 +1,6 @@
 var highscoreObject;
 var startTime;
 var hue = 0;
-var highscoreOnName = [];
 var highscoreSort = ["Playtime", "Blocks traveled", "Stone mined", "Diamonds mined", "Mobs killed", "Deaths", "Damage taken", "Obsidian mined", "Villagers traded"];
 var playerList;
 var uuidByPlayerName;
@@ -209,33 +208,38 @@ var highscore = (function () {
         }
 
         hue = 0;
-        highscoreOnName.length = 0;
         $.each(highscoreObject, function (nb, obj) {
             if (nb === "scores") {
                 $.each(obj, function (nb, obj) {
                     makeHighscoreHeader(obj.DisplayName);
-                    var found = false;
+
+                    let highScoreInfo = { found: false };
                     $.each(obj.scores, function (nb, obj) {
                         if (obj.playerName.toLowerCase() === selectedUserName.toLowerCase()) {
-                            highscoreOnName[0] = [obj.index, obj.playerName, obj.score];
-                            found = true;
-                        } else if (found == false) {
-                            highscoreOnName[0] = ["-", "-", "-"]
+                            highScoreInfo = { ...obj, found: true};
                         }
                     })
-                    $.each(highscoreOnName, function (nb, obj) {
+
+                    if(highScoreInfo.found) {
                         $("tbody").last().append($("<tr>").addClass("usernameHighlight")
                             .append($("<td>").addClass("rank")
-                                .text(obj[0]))
+                                .text(highScoreInfo.index))
                             .append($("<td>").addClass("avatar")
-                                .append($("<img>").attr("alt", "Avatar of " + obj[1])
-                                    .attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[obj[1]])))
+                                .append($("<img>").attr("alt", "Avatar of " + highScoreInfo.playerName)
+                                    .attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[highScoreInfo.playerName])))
                             .append($("<td>")
-                                .append($("<a href='#'>").addClass("playername").text(obj[1])))
-                            .append($("<td>").text(obj[2])));
-                    })
+                                .append($("<a href='#'>").addClass("playername").text(highScoreInfo.playerName)))
+                            .append($("<td>").text(highScoreInfo.score)));
+                        console.log("FOUND");
+                    } else {
+                        $("tbody").last().append($("<tr>").addClass("usernameHighlight")
+                            .append($("<td>").addClass("rank")
+                                .attr("colspan", "4")
+                                .text("Not scored yet")));
+                        console.log("NOT FOUND");
+                    }
                     hue += 40;
-                })
+                });
             }
         })
     }
