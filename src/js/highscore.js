@@ -23,6 +23,7 @@ var highscore = (function () {
 
         higscoreToHtml();
         calculateTimeAndToHtml();
+        renderPlayerListToHtml();
     }
 
     //
@@ -30,7 +31,9 @@ var highscore = (function () {
     //
 
     function initializePlayerList() {
-        playerList = highscoreObject.UUID.map(u => u.lastKnownName).sort();
+        playerList = highscoreObject.UUID.map(u => u.lastKnownName).sort((playerA, playerB) => {
+            return playerA.toLowerCase().localeCompare(playerB.toLowerCase());
+        });
     }
 
     /**
@@ -106,6 +109,19 @@ var highscore = (function () {
         rawFile.send(null);
     }
 
+    //
+    // Rendering
+    //
+    function renderPlayerListToHtml() {
+        const playerSelect = document.getElementById("username");
+        for(let player of playerList) {
+            const optionElement = document.createElement("option");
+            optionElement.value = player;
+            optionElement.text = player;
+            playerSelect.appendChild(optionElement);
+        }
+    }
+
     function makeHighscoreHeader(highscorename) {
         $("#row").append($("<div>").addClass("col-md-4 p-2")
             .append($("<div>").addClass("hiheader").css("filter", "hue-rotate(" + hue + "deg)")
@@ -133,6 +149,7 @@ var highscore = (function () {
     }
 
     function higscoreToHtml() {
+        hue = 0;
         $.each(highscoreObject, function (nb, obj) {
             if (nb === "time") {
                 startTime = obj;
@@ -165,8 +182,15 @@ var highscore = (function () {
         })
     }
 
-    $('#highscoreOnUsername').submit(function () {
+    function onUserNameChange() {
+        const selectedUserName = $("#username").val();
         $("#row").empty();
+        if(selectedUserName === '') {
+            higscoreToHtml();
+            return;
+        }
+
+        hue = 0;
         highscoreOnName.length = 0;
         $.each(highscoreObject, function (nb, obj) {
             if (nb === "scores") {
@@ -174,7 +198,7 @@ var highscore = (function () {
                     makeHighscoreHeader(obj.DisplayName);
                     var found = false;
                     $.each(obj.scores, function (nb, obj) {
-                        if (obj.playerName.toLowerCase() === $("#username").val().toLowerCase()) {
+                        if (obj.playerName.toLowerCase() === selectedUserName.toLowerCase()) {
                             highscoreOnName[0] = [obj.index, obj.playerName, obj.score];
                             found = true;
                         } else if (found == false) {
@@ -193,8 +217,16 @@ var highscore = (function () {
                 })
             }
         })
+    }
+
+    $("#username").change(onUserNameChange);
+
+    $('body').on('click', '.playername', function() {
+        const playerLink = $(this);
+        $('#username').val(playerLink.text());
+        onUserNameChange();
         return false;
-    });
+    })
 
     function timeConverter(UNIX_timestamp){
       var a = new Date(UNIX_timestamp * 1000);
