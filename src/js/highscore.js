@@ -18,13 +18,82 @@ var highscore = (function () {
 
     function init() {
         makeHighscoreObject("highscores.json");
+        initializePlayerList();
+        calculateDeathsPerDay();
+
         higscoreToHtml();
         calculateTimeAndToHtml();
     }
 
+    //
+    // Initializing
+    //
+
+    function initializePlayerList() {
+        playerList = highscoreObject.UUID.map(u => u.lastKnownName).sort();
+    }
+
+    /**
+     * Calculate deaths per day from "Deaths" and "Played Minutes" for players with >= 24h of gameplay
+     */
+    function calculateDeathsPerDay() {
+        const playerPlayedMinutes = generatePlayerScoreMap(highscoreObject.scores["ts_PlayedMinutes"].scores);
+        const playerDeaths = generatePlayerScoreMap(highscoreObject.scores["ts_Deaths"].scores);
+
+        let deathPerDayScores = [];
+        for(let player of playerList) {
+            const hoursPlayed = parsePlayedHours(playerPlayedMinutes[player]);
+            if(hoursPlayed >= 24) {
+                const daysPlayed = hoursPlayed / 24;
+                const deaths = playerDeaths[player] || 0;
+                deathPerDayScores.push({
+                    playerName: player,
+                    score: deaths / daysPlayed
+                });
+            }
+        }
+
+        // sort descending, format score and add index / rank
+        deathPerDayScores = deathPerDayScores.sort((a,b) => b.score - a.score).map((score, idx) => {
+            return {
+                playerName: score.playerName,
+                score: score.score.toFixed(2),
+                index: idx + 1
+            };
+        });
+
+        // add to highscoreObject
+        highscoreObject.scores["ts_DeathsPerDay"] = {
+            scores: deathPerDayScores,
+            DisplayName: "Deaths per Day"
+        }
+    }
+
+    /**
+     * parse string like "xx hours xx minutes" to number of hours
+     */
+    function parsePlayedHours(playedMinutesText) {
+        const playedMinutesPattern = /^([0-9]+) hours ([0-9]+) minutes$/;
+        const match = playedMinutesText.match(playedMinutesPattern);
+        if(match != null && match.length > 2) {
+            return +match[1] + (+match[2] / 60);
+        }
+        return 0;
+    }
+
+    /**
+     * transform array of objects with {playerName, score} to dictionary from playerName => score
+     */
+    function generatePlayerScoreMap(highscoreArray) {
+        return highscoreArray.reduce((result, item) => {
+            result[item.playerName] = item.score;
+            return result;
+        }, {});
+    }
+
     function makeHighscoreObject(file) {
         var rawFile = new XMLHttpRequest();
-	var timestamp = Math.floor(Date.now() / (1000 * 60))
+        var timestamp = Math.floor(Date.now() / (1000 * 60))
         rawFile.open("GET", file + "?" + timestamp, false);
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
