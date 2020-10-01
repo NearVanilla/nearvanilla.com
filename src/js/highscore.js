@@ -3,6 +3,8 @@ var startTime;
 var hue = 0;
 var highscoreOnName = [];
 var highscoreSort = ["Playtime", "Blocks traveled", "Stone mined", "Diamonds mined", "Mobs killed", "Deaths", "Damage taken", "Obsidian mined", "Villagers traded"];
+var playerList;
+var uuidByPlayerName;
 
 var highscore = (function () {
 
@@ -20,6 +22,7 @@ var highscore = (function () {
         makeHighscoreObject("highscores.json");
         initializePlayerList();
         calculateDeathsPerDay();
+        shortenPlayedMinutesText();
 
         higscoreToHtml();
         calculateTimeAndToHtml();
@@ -34,6 +37,10 @@ var highscore = (function () {
         playerList = highscoreObject.UUID.map(u => u.lastKnownName).sort((playerA, playerB) => {
             return playerA.toLowerCase().localeCompare(playerB.toLowerCase());
         });
+        uuidByPlayerName = highscoreObject.UUID.reduce((result, item) => {
+            result[item.lastKnownName] = item.UUID;
+            return result;
+        }, {});
     }
 
     /**
@@ -94,6 +101,12 @@ var highscore = (function () {
         }, {});
     }
 
+    function shortenPlayedMinutesText() {
+        for(let score of highscoreObject.scores["ts_PlayedMinutes"].scores) {
+            score.score = score.score.replace(/minutes$/, 'min');
+        }
+    }
+
     function makeHighscoreObject(file) {
         var rawFile = new XMLHttpRequest();
         var timestamp = Math.floor(Date.now() / (1000 * 60))
@@ -133,6 +146,8 @@ var highscore = (function () {
                         .append($("<th>")
                             .text("rank"))
                         .append($("<th>")
+                            .text(""))
+                        .append($("<th>")
                             .text("player"))
                         .append($("<th>")
                             .text("amount"))))
@@ -143,6 +158,9 @@ var highscore = (function () {
         $("tbody").last().append($("<tr>")
             .append($("<td>").addClass("rank")
                 .text(rank))
+            .append($("<td>").addClass("avatar")
+                .append($("<img>").attr("alt", "Avatar of " + playername)
+                    .attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[playername])))
             .append($("<td>")
                 .append($("<a href='#'>").addClass("playername").text(playername)))
             .append($("<td>").text(score)));
@@ -209,6 +227,9 @@ var highscore = (function () {
                         $("tbody").last().append($("<tr>").addClass("usernameHighlight")
                             .append($("<td>").addClass("rank")
                                 .text(obj[0]))
+                            .append($("<td>").addClass("avatar")
+                                .append($("<img>").attr("alt", "Avatar of " + obj[1])
+                                    .attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[obj[1]])))
                             .append($("<td>")
                                 .append($("<a href='#'>").addClass("playername").text(obj[1])))
                             .append($("<td>").text(obj[2])));
