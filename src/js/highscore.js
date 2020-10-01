@@ -153,16 +153,20 @@ var highscore = (function () {
                 .append($("<tbody>"))));
     }
 
-    function addHighscorePlayer(rank, playername, score) {
-        $("tbody").last().append($("<tr>")
+    function makePlayerScoreRow(rank, playername, score) {
+        const scoreCellText = typeof score === 'undefined' ? '-' : score;
+        const avatarCell = typeof playername === 'undefined' ? ''
+            : $("<img>").attr("alt", "Avatar of " + playername).attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[playername] + '?overlay=true');
+        const playerCell = typeof playername === 'undefined' ? '-' : $("<a href='#'>").addClass("playername").text(playername);
+
+        return $("<tr>")
             .append($("<td>").addClass("rank")
                 .text(rank))
             .append($("<td>").addClass("avatar")
-                .append($("<img>").attr("alt", "Avatar of " + playername)
-                    .attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[playername])))
+                .append(avatarCell))
             .append($("<td>")
-                .append($("<a href='#'>").addClass("playername").text(playername)))
-            .append($("<td>").text(score)));
+                .append(playerCell))
+            .append($("<td>").text(scoreCellText));
     }
 
     function higscoreToHtml() {
@@ -178,23 +182,15 @@ var highscore = (function () {
                             if (nb === "scores") {
                                 for (var i = 0; i < 15; i++) {
                                     if (obj.length > i) {
-                                        addHighscorePlayer(i + 1, obj[i].playerName, obj[i].score);
+                                        $("tbody").last().append(makePlayerScoreRow(i + 1, obj[i].playerName, obj[i].score));
                                     } else {
-                                        addHighscorePlayer(i + 1, "-", "-");
+                                        $("tbody").last().append(makePlayerScoreRow(i + 1));
                                     }
                                 }
                             }
                         hue += 40;
                     })
                 })
-            }
-        })
-    }
-
-    function hasPlayerPlayedOnServer(playername) {
-        $.each(highscoreObject, function (nb, obj) {
-            if (nb === "scores") {
-
             }
         })
     }
@@ -221,22 +217,12 @@ var highscore = (function () {
                     })
 
                     if(highScoreInfo.found) {
-                        $("tbody").last().append($("<tr>").addClass("usernameHighlight")
-                            .append($("<td>").addClass("rank")
-                                .text(highScoreInfo.index))
-                            .append($("<td>").addClass("avatar")
-                                .append($("<img>").attr("alt", "Avatar of " + highScoreInfo.playerName)
-                                    .attr("src", 'https://crafatar.com/avatars/' + uuidByPlayerName[highScoreInfo.playerName])))
-                            .append($("<td>")
-                                .append($("<a href='#'>").addClass("playername").text(highScoreInfo.playerName)))
-                            .append($("<td>").text(highScoreInfo.score)));
-                        console.log("FOUND");
+                        $("tbody").last().append(makePlayerScoreRow(highScoreInfo.index, highScoreInfo.playerName, highScoreInfo.score).addClass("usernameHighlight"));
                     } else {
                         $("tbody").last().append($("<tr>").addClass("usernameHighlight")
                             .append($("<td>").addClass("rank")
                                 .attr("colspan", "4")
                                 .text("Not scored yet")));
-                        console.log("NOT FOUND");
                     }
                     hue += 40;
                 });
