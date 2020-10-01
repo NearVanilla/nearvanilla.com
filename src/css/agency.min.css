@@ -986,6 +986,11 @@ strong {
     text-align: center;
 }
 
+.highscores .avatar > img {
+    width: 1em;
+    height: 1em;
+}
+
 .highscores th {
     padding: 5px;
 }
