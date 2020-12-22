@@ -5,7 +5,7 @@ var totalMembers;
 var highscore = (function () {
 
     function init() {
-        makeHighscoreObject("highscores.json");
+        makeHighscoreObject("static/highscores.json");
         membersToHtml();
     }
 

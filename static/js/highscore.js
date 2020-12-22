@@ -18,7 +18,7 @@ var highscore = (function () {
     }
 
     function init() {
-        makeHighscoreObject("highscores.json");
+        makeHighscoreObject("static/highscores.json");
         initializePlayerList();
         calculateDeathsPerDay();
         shortenPlayedMinutesText();

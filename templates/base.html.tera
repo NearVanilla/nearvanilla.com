@@ -1,10 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Tera Demo</title>
+    <title>Near Vanilla</title>
+    <meta name="description" content="We promote a low stress community atmosphere, where we can take our time, think before we act, and have fun together! We respect each other and our differences. We act and communicate responsibly and take responsibility for our actions in game. It is a server free from griefing, thieving and moderators." />
+    <meta name='url' content='http://nearvanilla.com/'>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" href="static/img/icons/favicon.ico">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110180178-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-110180178-2');
+    </script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link href="static/css/agency.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+
+  {% block head %}{% endblock head %}
+
   </head>
   <body>
-    {% block content %}{% endblock content %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Near Vanilla</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#About">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#Specifications">Specifications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#Info">Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#Plugins">Plugins</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="#Map">Map</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle nav-link" href="#" id="navbarDropdownOther" data-toggle="dropdown">Other<span class="caret"></span></a>
+                        <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownOther">
+                            <ul class="submenu">
+                                <li class="nav-item"><a class="nav-link" href="/apply" target="_blank">Apply</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/highscores">Highscores</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <script src="static/js/jquery.js"></script>
+  <script src="static/js/GoogleAnalytics.js"></script>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="static/js/jquery.min.js"></script>
+  <script src="static/js/popper.min.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="static/js/jquery.easing.min.js"></script>
+  <script src="static/js/isotope.pkgd.min.js"></script>
+
+  <!-- Custom scripts -->
+  <script src="static/js/agency.min.js"></script>
+  <script src="static/js/featureSlider.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script src="static/js/slick.js"></script>
+
+  {% block content %}{% endblock content %}
+
+  <!-- Footer -->
+  <footer>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <p class="copyrightNearVanilla">
+                      &copy; Near Vanilla. All rights reserved.
+                  </p>
+                  <p class="ip">Play @ play.nearvanilla.com</p>
+              </div>
+          </div>
+      </div>
+  </footer>
+
   </body>
 </html>

@@ -1,6 +1,7 @@
 #![feature(decl_macro)]
 #[macro_use]
 extern crate rocket;
+use rocket_contrib::serve::StaticFiles;
 
 use std::collections::HashMap;
 
@@ -33,14 +34,11 @@ impl<'r, 'o: 'r, R: Responder<'r>> Responder<'r> for InternalToNotFound<R> {
 
 #[get("/")]
 fn index() -> Template {
-    let context = TemplateContext {
-        items: vec!["One", "Two", "Three"],
-    };
-    Template::render("index", &context)
+    templates(String::from("index")).0
 }
 
 #[get("/<path>")]
-fn hello(path: String) -> InternalToNotFound<Template> {
+fn templates(path: String) -> InternalToNotFound<Template> {
     let context = TemplateContext {
         items: vec!["One", "Two", "Three"],
     };
@@ -56,7 +54,8 @@ fn not_found(req: &Request) -> Template {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, hello])
+        .mount("/", routes![index, templates])
+        .mount("/static/", StaticFiles::from("static"))
         .attach(Template::fairing())
         .register(catchers![not_found])
 }
