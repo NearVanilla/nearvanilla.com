@@ -3,10 +3,9 @@ services:
   website:
     container_name: "website"
     hostname: "website"
-    image: 'nginx:1.19.2'
+    image: 'nearvanilla_com'
+    build:
+      context: .
     restart: unless-stopped
-    volumes:
-      - './src:/var/www/html:ro'
-      - './config:/etc/nginx/conf.d:ro'
     ports:
-      - '8080:80'
+      - '8000:8000'
