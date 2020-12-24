@@ -1,48 +1,44 @@
 #![feature(decl_macro)]
+
+mod caching;
+use caching::{Cached, Caching};
+
 #[macro_use]
 extern crate rocket;
-use rocket_contrib::serve::StaticFiles;
 
 use std::collections::HashMap;
 
-use rocket::{
-    http::Status,
-    response::{self, Responder},
-    Request,
-};
+use rocket::{http::hyper::header::CacheDirective, request::Request, response::NamedFile};
 use rocket_contrib::templates::Template;
+use std::path::{Path, PathBuf};
 
-#[derive(serde::Serialize)]
-struct TemplateContext {
-    items: Vec<&'static str>,
-}
-/// If response status is `status::InternalServer`,
-/// change it to `status::NotFound`
-#[derive(Debug, Clone, PartialEq)]
-pub struct InternalToNotFound<R>(pub R);
-
-/// If response is 500, it returns 404 instead
-impl<'r, 'o: 'r, R: Responder<'r>> Responder<'r> for InternalToNotFound<R> {
-    fn respond_to(self, req: &Request<'_>) -> response::Result<'r> {
-        let responder = self.0;
-        responder.respond_to(req).map_err(|e| match e {
-            Status::InternalServerError => Status::NotFound,
-            other => other,
-        })
-    }
-}
+static CACHE_STATIC_MAX_AGE: u32 = 3600;
 
 #[get("/")]
 fn index() -> Template {
-    templates(String::from("index")).0
+    simple_template(String::from("index"))
 }
 
-#[get("/<path>")]
-fn templates(path: String) -> InternalToNotFound<Template> {
-    let context = TemplateContext {
-        items: vec!["One", "Two", "Three"],
-    };
-    InternalToNotFound(Template::render(path, &context))
+#[get("/highscores")]
+fn highscores() -> Template {
+    simple_template(String::from("highscores"))
+}
+
+#[get("/apply")]
+fn apply() -> Template {
+    simple_template(String::from("apply"))
+}
+
+#[get("/static/<file..>", rank = 1)]
+fn files(file: PathBuf) -> Option<Cached<NamedFile>> {
+    NamedFile::open(Path::new("static/").join(file))
+        .ok()
+        .map(|file| file.cached(vec![CacheDirective::MaxAge(CACHE_STATIC_MAX_AGE)]))
+}
+
+fn simple_template(path: String) -> Template {
+    let map: HashMap<String, String> = HashMap::with_capacity(0);
+    Template::render(path, map)
 }
 
 #[catch(404)]
@@ -54,8 +50,7 @@ fn not_found(req: &Request) -> Template {
 
 fn rocket() -> rocket::Rocket {
     rocket::ignite()
-        .mount("/", routes![index, templates])
-        .mount("/static/", StaticFiles::from("static"))
+        .mount("/", routes![index, highscores, files, apply])
         .attach(Template::fairing())
         .register(catchers![not_found])
 }
