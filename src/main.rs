@@ -2,6 +2,9 @@
 
 mod caching;
 use caching::{Cached, Caching};
+mod render;
+
+use render::{simple_template, template_highscores};
 
 #[macro_use]
 extern crate rocket;
@@ -21,7 +24,7 @@ fn index() -> Template {
 
 #[get("/highscores")]
 fn highscores() -> Template {
-    simple_template(String::from("highscores"))
+    template_highscores()
 }
 
 #[get("/apply")]
@@ -34,11 +37,6 @@ fn files(file: PathBuf) -> Option<Cached<NamedFile>> {
     NamedFile::open(Path::new("static/").join(file))
         .ok()
         .map(|file| file.cached(vec![CacheDirective::MaxAge(CACHE_STATIC_MAX_AGE)]))
-}
-
-fn simple_template(path: String) -> Template {
-    let map: HashMap<String, String> = HashMap::with_capacity(0);
-    Template::render(path, map)
 }
 
 #[catch(404)]
