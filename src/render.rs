@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use rocket::{http::hyper::header::CacheDirective, request::Request, response::NamedFile};
+use rocket::{http::{Status, hyper::header::CacheDirective}, request::Request, response::{status, NamedFile}};
 use rocket_contrib::templates::Template;
 use std::path::{Path, PathBuf};
 use uuid::Uuid;
@@ -14,7 +14,7 @@ pub fn simple_template(path: String) -> Template {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct HighScores {
+pub struct HighScores {
     #[serde(alias = "UUID")]
     uuid: Vec<UserUUIDEntry>,
     #[serde(with = "floating_ts")]
@@ -23,7 +23,7 @@ struct HighScores {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct UserUUIDEntry {
+pub struct UserUUIDEntry {
     #[serde(alias = "UUID")]
     uuid: Uuid,
     #[serde(alias = "lastKnownName")]
@@ -31,14 +31,14 @@ struct UserUUIDEntry {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct ScoresEntry {
+pub struct ScoresEntry {
     #[serde(alias = "DisplayName")]
     name: String,
     scores: Vec<ScoreEntry>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-struct ScoreEntry {
+pub struct ScoreEntry {
     #[serde(alias = "playerName")]
     player_name: String,
     index: i64,
@@ -47,9 +47,14 @@ struct ScoreEntry {
 
 #[derive(Serialize, Deserialize, PartialEq, Debug)]
 #[serde(untagged)]
-enum StringOrInt {
+pub enum StringOrInt {
     String(String),
     Integer(i64),
+}
+
+#[derive(Debug)]
+struct HighScoresContext {
+    highscores: HighScores,
 }
 
 pub fn template_highscores() -> Template {

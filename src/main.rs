@@ -4,16 +4,22 @@ mod caching;
 use caching::{Cached, Caching};
 mod render;
 
-use render::{simple_template, template_highscores};
+use render::{simple_template, template_highscores, HighScores};
+mod error;
+use error::{Error, StateError, Result};
 
 #[macro_use]
 extern crate rocket;
 
 use std::collections::HashMap;
+use std::sync::{Arc, RwLock};
+use std::fs::File;
 
 use rocket::{http::hyper::header::CacheDirective, request::Request, response::NamedFile};
 use rocket_contrib::templates::Template;
 use std::path::{Path, PathBuf};
+use std::io::BufReader;
+use std::io::prelude::*;
 
 static CACHE_STATIC_MAX_AGE: u32 = 3600;
 
@@ -46,13 +52,40 @@ fn not_found(req: &Request) -> Template {
     Template::render("error/404", &map)
 }
 
-fn rocket() -> rocket::Rocket {
-    rocket::ignite()
-        .mount("/", routes![index, highscores, files, apply])
-        .attach(Template::fairing())
-        .register(catchers![not_found])
+pub struct AppState {
+    pub highscores_state_file: PathBuf,
 }
 
-fn main() {
-    rocket().launch();
+pub struct HighScoreState {
+    state: RwLock<HighScores>,
+}
+
+impl HighScoreState {
+    fn from_file<P: Into<PathBuf>>(path: P) -> Result<HighScoreState> {
+        let mut s = String::new();
+        let path: PathBuf = path.into();
+        File::open(&path).and_then(|mut f| f.read_to_string(&mut s)).map_err(|e| StateError::ReadState { path: path, source: e })?;
+        let highscores: HighScores = serde_json::from_str(&s).map_err(|e| Error::DeserializeError(e))?;
+        Ok(HighScoreState { state: RwLock::new(highscores) })
+    }
+}
+
+fn rocket(app_state: AppState, highscore_state: HighScoreState) -> rocket::Rocket {
+    rocket::ignite()
+        .mount("/", routes![index, highscores, files, apply])
+        .register(catchers![not_found])
+        .attach(Template::fairing())
+        .manage(app_state)
+        .manage(highscore_state)
+}
+
+
+fn main() -> Result<()> {
+    let app_state = AppState {
+        highscores_state_file: PathBuf::from("state/highscores.json"),
+    };
+
+    let highscore_state = HighScoreState::from_file(app_state.highscores_state_file.clone())?;
+    rocket(app_state, highscore_state).launch();
+    Ok(())
 }
