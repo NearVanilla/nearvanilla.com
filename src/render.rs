@@ -1,12 +1,10 @@
 use std::collections::HashMap;
 
-use rocket::{http::{Status, hyper::header::CacheDirective}, request::Request, response::{status, NamedFile}};
 use rocket_contrib::templates::Template;
-use std::path::{Path, PathBuf};
+
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
-use serde::{Deserialize,Serialize};
-use chrono::{DateTime, Utc, serde::ts_seconds};
-use serde_json;
 
 pub fn simple_template(path: String) -> Template {
     let map: HashMap<String, String> = HashMap::with_capacity(0);
@@ -62,15 +60,12 @@ pub fn template_highscores() -> Template {
 }
 
 mod floating_ts {
-    use chrono::{DateTime, Utc, TimeZone};
-    use serde::{self, Deserialize, Serializer, Deserializer};
+    use chrono::{DateTime, TimeZone, Utc};
+    use serde::{self, Deserialize, Deserializer, Serializer};
 
     const FORMAT: &'static str = "%s%.f";
 
-    pub fn serialize<S>(
-        date: &DateTime<Utc>,
-        serializer: S,
-    ) -> Result<S::Ok, S::Error>
+    pub fn serialize<S>(date: &DateTime<Utc>, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
     {
@@ -78,24 +73,22 @@ mod floating_ts {
         serializer.serialize_f64(s.parse().expect("string to parse to float"))
     }
 
-    pub fn deserialize<'de, D>(
-        deserializer: D,
-    ) -> Result<DateTime<Utc>, D::Error>
+    pub fn deserialize<'de, D>(deserializer: D) -> Result<DateTime<Utc>, D::Error>
     where
         D: Deserializer<'de>,
     {
         let f = f64::deserialize(deserializer)?;
         let s = format!("{}", f);
-        Utc.datetime_from_str(&s, FORMAT).map_err(serde::de::Error::custom)
+        Utc.datetime_from_str(&s, FORMAT)
+            .map_err(serde::de::Error::custom)
     }
 }
-
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use pretty_assertions::assert_eq;
     use chrono::TimeZone;
+    use pretty_assertions::assert_eq;
 
     #[test]
     fn deserialize_timestamp() {
@@ -109,7 +102,8 @@ mod tests {
     }
 
     fn test_deserialization<'a, T>(string: &'a str, expected: T)
-        where T: std::fmt::Debug + PartialEq + Deserialize<'a>
+    where
+        T: std::fmt::Debug + PartialEq + Deserialize<'a>,
     {
         let result: serde_json::Result<T> = serde_json::from_str(string);
         match result {
@@ -233,7 +227,8 @@ mod tests {
         score_map.insert(String::from("ts_DamageTaken"), damage_taken);
         let expected = HighScores {
             uuid: vec![UserUUIDEntry {
-                uuid: Uuid::parse_str("c73bd1d2-d4c4-4324-806f-d9a6e7454d2e").expect("UUID should parse sucessfully"),
+                uuid: Uuid::parse_str("c73bd1d2-d4c4-4324-806f-d9a6e7454d2e")
+                    .expect("UUID should parse sucessfully"),
                 name: String::from("Prof_Bloodstone"),
             }],
             scores: score_map,

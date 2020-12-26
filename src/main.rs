@@ -6,19 +6,17 @@ mod render;
 
 use render::{simple_template, template_highscores, HighScores};
 mod error;
-use error::{Error, StateError, Result};
+use error::{Error, Result, StateError};
 
 #[macro_use]
 extern crate rocket;
 
-use std::collections::HashMap;
-use std::sync::{Arc, RwLock};
-use std::fs::File;
+use std::{collections::HashMap, fs::File, sync::RwLock};
 
 use rocket::{http::hyper::header::CacheDirective, request::Request, response::NamedFile};
 use rocket_contrib::templates::Template;
 use std::path::{Path, PathBuf};
-use std::io::BufReader;
+
 use std::io::prelude::*;
 
 static CACHE_STATIC_MAX_AGE: u32 = 3600;
@@ -64,9 +62,13 @@ impl HighScoreState {
     fn from_file<P: Into<PathBuf>>(path: P) -> Result<HighScoreState> {
         let mut s = String::new();
         let path: PathBuf = path.into();
-        File::open(&path).and_then(|mut f| f.read_to_string(&mut s)).map_err(|e| StateError::ReadState { path: path, source: e })?;
+        File::open(&path)
+            .and_then(|mut f| f.read_to_string(&mut s))
+            .map_err(|e| StateError::ReadState { path, source: e })?;
         let highscores: HighScores = serde_json::from_str(&s).map_err(|e| Error::DeserializeError(e))?;
-        Ok(HighScoreState { state: RwLock::new(highscores) })
+        Ok(HighScoreState {
+            state: RwLock::new(highscores),
+        })
     }
 }
 
@@ -78,7 +80,6 @@ fn rocket(app_state: AppState, highscore_state: HighScoreState) -> rocket::Rocke
         .manage(app_state)
         .manage(highscore_state)
 }
-
 
 fn main() -> Result<()> {
     let app_state = AppState {
