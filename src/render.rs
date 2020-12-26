@@ -13,7 +13,7 @@ pub fn simple_template(path: String) -> Template {
     Template::render(path, map)
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct HighScores {
     #[serde(alias = "UUID")]
     uuid: Vec<UserUUIDEntry>,
@@ -22,7 +22,7 @@ pub struct HighScores {
     scores: HashMap<String, ScoresEntry>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct UserUUIDEntry {
     #[serde(alias = "UUID")]
     uuid: Uuid,
@@ -30,14 +30,14 @@ pub struct UserUUIDEntry {
     name: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct ScoresEntry {
     #[serde(alias = "DisplayName")]
     name: String,
     scores: Vec<ScoreEntry>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct ScoreEntry {
     #[serde(alias = "playerName")]
     player_name: String,
@@ -65,7 +65,7 @@ mod floating_ts {
     use chrono::{DateTime, Utc, TimeZone};
     use serde::{self, Deserialize, Serializer, Deserializer};
 
-    const FORMAT: &'static str = "%s.%6f";
+    const FORMAT: &'static str = "%s%.f";
 
     pub fn serialize<S>(
         date: &DateTime<Utc>,
@@ -106,5 +106,139 @@ mod tests {
             Ok(score) => assert_eq!(score.timestamp, expected),
             e => panic!("Expected to parse timestamp sucessfully, got {:#?}", e),
         };
+    }
+
+    fn test_deserialization<'a, T>(string: &'a str, expected: T)
+        where T: std::fmt::Debug + PartialEq + Deserialize<'a>
+    {
+        let result: serde_json::Result<T> = serde_json::from_str(string);
+        match result {
+            Ok(deserialized) => assert_eq!(deserialized, expected),
+            e => panic!("Expected to deserialize entry sucessfully, got {:#?}", e),
+        };
+    }
+
+    #[test]
+    fn deserialize_numeric_score() {
+        let input = r#"
+            {
+              "index": 1,
+              "playerName": "Prof_Bloodstone",
+              "score": 6629
+            }
+        "#;
+        let expected = ScoreEntry {
+            index: 1,
+            player_name: String::from("Prof_Bloodstone"),
+            score: StringOrInt::Integer(6629),
+        };
+        test_deserialization(input, expected);
+    }
+
+    #[test]
+    fn deserialize_string_score() {
+        let input = r#"
+            {
+              "index": 1,
+              "playerName": "Prof_Bloodstone",
+              "score": "136.7K blocks"
+            }
+        "#;
+        let expected = ScoreEntry {
+            index: 1,
+            player_name: String::from("Prof_Bloodstone"),
+            score: StringOrInt::String(String::from("136.7K blocks")),
+        };
+        test_deserialization(input, expected);
+    }
+
+    #[test]
+    fn deserialize_scores() {
+        let input = r#"
+            {
+                "DisplayName": "Damage Taken",
+                "scores": [
+                    {
+                        "index": 1,
+                        "playerName": "Prof_Bloodstone",
+                        "score": 6629
+                    }
+                ]
+            }
+        "#;
+        let expected = ScoresEntry {
+            name: String::from("Damage Taken"),
+            scores: vec![ScoreEntry {
+                index: 1,
+                player_name: String::from("Prof_Bloodstone"),
+                score: StringOrInt::Integer(6629),
+            }],
+        };
+        test_deserialization(input, expected);
+    }
+
+    #[test]
+    fn deserialize_full() {
+        let input = r#"
+            {
+              "UUID": [
+                {
+                  "UUID": "c73bd1d2-d4c4-4324-806f-d9a6e7454d2e",
+                  "lastKnownName": "Prof_Bloodstone"
+                }
+              ],
+              "scores": {
+                "Blocks traveled": {
+                  "DisplayName": "Blocks traveled",
+                  "scores": [
+                    {
+                      "index": 1,
+                      "playerName": "Prof_Bloodstone",
+                      "score": "136.7K blocks"
+                    }
+                  ]
+                },
+                "ts_DamageTaken": {
+                  "DisplayName": "Damage Taken",
+                  "scores": [
+                    {
+                      "index": 1,
+                      "playerName": "Prof_Bloodstone",
+                      "score": 6629
+                    }
+                  ]
+                }
+              },
+              "timestamp": 1608744001.2054975
+            }
+        "#;
+        let damage_taken = ScoresEntry {
+            name: String::from("Damage Taken"),
+            scores: vec![ScoreEntry {
+                index: 1,
+                player_name: String::from("Prof_Bloodstone"),
+                score: StringOrInt::Integer(6629),
+            }],
+        };
+        let blocks_traveled = ScoresEntry {
+            name: String::from("Blocks traveled"),
+            scores: vec![ScoreEntry {
+                index: 1,
+                player_name: String::from("Prof_Bloodstone"),
+                score: StringOrInt::String(String::from("136.7K blocks")),
+            }],
+        };
+        let mut score_map = HashMap::new();
+        score_map.insert(String::from("Blocks traveled"), blocks_traveled);
+        score_map.insert(String::from("ts_DamageTaken"), damage_taken);
+        let expected = HighScores {
+            uuid: vec![UserUUIDEntry {
+                uuid: Uuid::parse_str("c73bd1d2-d4c4-4324-806f-d9a6e7454d2e").expect("UUID should parse sucessfully"),
+                name: String::from("Prof_Bloodstone"),
+            }],
+            scores: score_map,
+            timestamp: Utc.ymd(2020, 12, 23).and_hms_nano(17, 20, 1, 205497500),
+        };
+        test_deserialization(input, expected);
     }
 }
