@@ -11,13 +11,15 @@ use error::{Error, Result, StateError};
 #[macro_use]
 extern crate rocket;
 
-use std::{collections::HashMap, fs::File, sync::RwLock};
-
 use rocket::{http::hyper::header::CacheDirective, request::Request, response::NamedFile};
 use rocket_contrib::templates::Template;
-use std::path::{Path, PathBuf};
-
-use std::io::prelude::*;
+use std::{
+    collections::HashMap,
+    fs::File,
+    io::prelude::*,
+    path::{Path, PathBuf},
+    sync::{Arc, RwLock},
+};
 
 static CACHE_STATIC_MAX_AGE: u32 = 3600;
 
@@ -55,7 +57,7 @@ pub struct AppState {
 }
 
 pub struct HighScoreState {
-    state: RwLock<HighScores>,
+    state: RwLock<Arc<HighScores>>,
 }
 
 impl HighScoreState {
@@ -67,7 +69,7 @@ impl HighScoreState {
             .map_err(|e| StateError::ReadState { path, source: e })?;
         let highscores: HighScores = serde_json::from_str(&s).map_err(|e| Error::DeserializeError(e))?;
         Ok(HighScoreState {
-            state: RwLock::new(highscores),
+            state: RwLock::new(Arc::new(highscores)),
         })
     }
 }
