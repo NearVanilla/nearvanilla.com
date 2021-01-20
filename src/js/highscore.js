@@ -51,7 +51,9 @@ var highscore = (function () {
 
         let deathPerDayScores = [];
         for(let player of playerList) {
-            const hoursPlayed = parsePlayedHours(playerPlayedMinutes[player]);
+            const hoursPlayedStr = playerPlayedMinutes[player];
+            if(hoursPlayedStr === undefined) { continue; }
+            const hoursPlayed = parsePlayedHours(hoursPlayedStr);
             if(hoursPlayed >= 24) {
                 const daysPlayed = hoursPlayed / 24;
                 const deaths = playerDeaths[player] || 0;
