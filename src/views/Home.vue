@@ -11,9 +11,11 @@
       flex
       justify-center
       items-center
+      flex-col
     "
   >
     <p class="text-5xl font-bold">{{ mq.current }}</p>
+    <p><font-awesome-icon :icon="['fas', 'bars']" /></p>
   </div>
 </template>
 
