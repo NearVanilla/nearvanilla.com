@@ -2,6 +2,26 @@
 
 This repository contains sources of nearvanilla.com website.
 
+## Project setup
+
+Install Vue 3 and Vue cli: [Installation Steps](https://v3.vuejs.org/guide/installation.html#npm)
+
+### Install dependencies
+```
+npm install
+```
+
+### Compiles and run with hot-reload
+```
+npm run dev
+```
+
+### Build and minify for production
+```
+npm run build
+```
+
+
 ## Deployment
 
 Make sure to copy [highscores.json](https://nearvanilla.com/highscores.json)
