@@ -5,5 +5,11 @@ import "./main.css";
 
 import router from "./router";
 import { store } from "./store";
+import { Vue3Mq } from "vue3-mq";
 
-createApp(App).use(router).use(store).mount("#app");
+var app = createApp(App);
+
+app.use(router).use(store).use(Vue3Mq, {
+  preset: "tailwind",
+});
+app.mount("#app");
