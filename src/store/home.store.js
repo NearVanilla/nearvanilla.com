@@ -1,11 +1,7 @@
 export default {
-  state: () => ({
-    count: 1,
-  }),
+  state: () => ({}),
 
   mutations: {},
 
-  getters: {
-    count: (state) => state.count,
-  },
+  getters: {},
 };
