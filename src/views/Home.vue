@@ -16,9 +16,16 @@
           <a href="#About" class="scroll-down block" v-smooth-scroll></a>
         </div>
       </div>
-      <div id="About" class="min-h-93 w-screen">
-        <p>Test</p>
-      </div>
+      <section
+        id="About"
+        class="min-h-93 w-screen p-12 open-sans"
+        style="background-color: #f0f0f0"
+      >
+        <h2 class="text-center text-46 font-bold" style="color: #312f2b">
+          Who we are
+        </h2>
+        <div class="flex"></div>
+      </section>
     </div>
   </div>
 </template>
@@ -126,5 +133,9 @@ export default {
 
 .min-h-93 {
   min-height: 93.5vh;
+}
+
+.text-46 {
+  font-size: 46px;
 }
 </style>
