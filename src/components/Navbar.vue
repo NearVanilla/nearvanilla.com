@@ -10,7 +10,7 @@
       z-10
       h-auto
       bg-transparent
-      py-10
+      py-6
       transition-padding
       flex flex-nowrap
       justify-start
@@ -26,7 +26,7 @@
         mx-auto
         px-4
         w-full w-540
-        md:720
+        md:w-720
         lg:w-960
         xl:w-1140
       "
@@ -41,6 +41,7 @@
           mr-4
           py-1.5
           whitespace-nowrap
+          leading-normal
         "
         :class="shrunk ? 'text-xl' : 'text-5xl'"
         v-smooth-scroll
@@ -60,16 +61,39 @@
             text-white text-sm
             w-full
             justify-end
+            tracking-1
+            font-normal
           "
         >
-          <a class="px-4 py-4" href="#About">About</a>
-          <a class="px-4 py-4" href="#Specifications">Specifications</a>
-          <a class="px-4 py-4" href="#Info">Information</a>
-          <a class="px-4 py-4" href="#Plugins">Plugins</a>
-          <a class="px-4 py-4" href="#Map">Map</a>
-          <div class="flex items-center">
-            <span class="px-4 py-4">Other</span>
-            <font-awesome-icon :icon="['fas', 'caret-down']" />
+          <a class="link px-4 py-4" href="#About">About</a>
+          <a class="link px-4 py-4" href="#Specifications">Specifications</a>
+          <a class="link px-4 py-4" href="#Info">Information</a>
+          <a class="link px-4 py-4" href="#Plugins">Plugins</a>
+          <a class="link px-4 py-4" href="#Map">Map</a>
+          <div
+            class="flex items-center relative cursor-pointer"
+            @click.stop="showOther = !showOther"
+          >
+            <div class="link">
+              <span class="px-4 py-4">Other</span>
+              <font-awesome-icon :icon="['fas', 'caret-down']" />
+            </div>
+            <div
+              v-if="showOther"
+              style="background-color: #343434"
+              class="
+                absolute
+                top-14
+                left-0
+                flex flex-col
+                text-left
+                rounded
+                leading-none
+              "
+            >
+              <span class="link pt-6 pb-4 pl-4 pr-10">APPLY</span>
+              <span class="link pt-4 pb-6 pl-4 pr-10">HIGHSCORES</span>
+            </div>
           </div>
         </div>
       </div>
@@ -96,9 +120,11 @@
       >
         Near Vanilla
       </a>
-      <div class="custom-yellow p-3 rounded text-xs leading-none cursor-pointer">
+      <div
+        class="custom-yellow p-3 rounded text-xs leading-none cursor-pointer"
+      >
         <font-awesome-icon class="text-gray-900" :icon="['fas', 'bars']" />
-        </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -115,6 +141,12 @@ export default {
     },
   },
 
+  data() {
+    return {
+      showOther: false,
+    };
+  },
+
   computed: {
     isMobile() {
       return (
@@ -122,6 +154,12 @@ export default {
         this.mq.current == "sm" ||
         this.mq.current == "xs"
       );
+    },
+  },
+
+  methods: {
+    log(str) {
+      console.log(str);
     },
   },
 };
@@ -151,25 +189,15 @@ export default {
   flex-basis: 100%;
 }
 
-.custom-yellow{
+.custom-yellow {
   background-color: #fed136;
 }
 
-@responsive {
-  .w-1140 {
-    max-width: 1140px;
-  }
+.link:hover {
+  color: #fed136;
+}
 
-  .w-960 {
-    max-width: 960px;
-  }
-
-  .w-720 {
-    max-width: 720px;
-  }
-
-  .w-540 {
-    max-width: 540px;
-  }
+.tracking-1 {
+  letter-spacing: 1px;
 }
 </style>
