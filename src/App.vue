@@ -52,4 +52,8 @@ body {
 .montserrat {
   font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.open-sans {
+  font-family: "Open Sans", Arial, sans-serif;
+}
 </style>

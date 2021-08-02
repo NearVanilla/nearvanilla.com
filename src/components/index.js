@@ -1,5 +1,4 @@
-import Navbar from './Navbar.vue'
+import Navbar from "./Navbar.vue";
+import Island from "./Island.vue";
 
-export {
-    Navbar
-}
+export { Navbar, Island };
