@@ -7,12 +7,10 @@
         :style="{ backgroundImage: 'url(' + bg + ')' }"
       >
         <div class="flex flex-wrap justify-center items-center w-full h-full">
-          <island style="width: 900px" />
-          <!-- <div class="row justify-content-center">
-          <div class="logo">
-            <img src="../assets/img/logo.png" alt="logo" width="70%" />
+          <island style="width: 900px; margin-top: -100px" v-if="!isMobile" />
+          <div v-else class="flex items-center justify-center mt-20 h-4/5">
+            <img src="/img/logo.png" alt="logo" class="h-full" />
           </div>
-        </div> -->
           <a href="#About" class="scroll-down block" v-smooth-scroll></a>
         </div>
       </div>
@@ -24,7 +22,12 @@
         <h2 class="text-center text-46 font-bold" style="color: #312f2b">
           Who we are
         </h2>
-        <div class="flex"></div>
+        <div class="flex items-center mx-20">
+          <div class="flex flex-col w-1/2"></div>
+          <div class="w-1/2">
+            <img src="/img/creativity.png" class="rounded-full w-4/5" />
+          </div>
+        </div>
       </section>
     </div>
   </div>
@@ -37,6 +40,8 @@ import bgImg from "../assets/img/bg-1.jpg";
 
 export default {
   name: "Home",
+
+  inject: ["mq"],
 
   components: {
     Navbar,
@@ -62,10 +67,18 @@ export default {
     window.addEventListener("scroll", this.handleScroll);
   },
 
-  mounted() {},
-
   destroyed() {
     window.removeEventListener("scroll", () => {});
+  },
+
+  computed: {
+    isMobile() {
+      return (
+        this.mq.current == "md" ||
+        this.mq.current == "sm" ||
+        this.mq.current == "xs"
+      );
+    },
   },
 };
 </script>
@@ -81,7 +94,6 @@ export default {
   position: absolute;
   bottom: 30px;
   left: 50%;
-  margin-left: -16px;
   width: 50px;
   height: 50px;
   border: 2px solid #fff;
