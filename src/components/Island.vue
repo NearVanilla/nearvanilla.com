@@ -1,22 +1,22 @@
 <template>
   <div class="relative block">
     <img
-      src="../assets/img/island/leftIsland.png"
+      src="/img/island/leftIsland.png"
       alt="logoLeftIsland"
       class="relative left-island leftislandfloat"
     />
     <img
-      src="../assets/img/island/rightIsland.png"
+      src="/img/island/rightIsland.png"
       alt="logoRightIsland"
       class="absolute right-island rightislandfloat"
     />
     <img
-      src="../assets/img/island/middleIslandsWithClouds.png"
+      src="/img/island/middleIslandsWithClouds.png"
       alt="logoMiddleIsland"
       class="absolute center-island centerislandfloat"
     />
     <img
-      src="../assets/img/island/NVText2.png"
+      src="/img/island/NVText2.png"
       alt="logoText"
       class="absolute logo logofontglow"
     />
