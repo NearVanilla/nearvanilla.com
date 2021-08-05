@@ -56,4 +56,12 @@ body {
 .open-sans {
   font-family: "Open Sans", Arial, sans-serif;
 }
+
+.bg-yellow {
+  background-color: #fed136;
+}
+
+.border-yellow {
+  border-color: #fed136;
+}
 </style>
