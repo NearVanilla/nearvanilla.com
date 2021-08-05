@@ -22,8 +22,19 @@
         <h2 class="text-center text-46 font-bold" style="color: #312f2b">
           Who we are
         </h2>
-        <div class="flex items-center justify-center mx-20">
-          <div class="flex flex-col w-1/3 text-left">
+        <div
+          class="flex flex-col md:flex-row items-center justify-center mx-20"
+        >
+          <div
+            class="
+              flex flex-col
+              w-full
+              text-center
+              md:text-left md:w-1/2
+              lg:w-1/3
+              text-left
+            "
+          >
             <h3 class="montserrat text-3xl leading-tight mb-6">
               We live with the <span class="font-bold">community</span>
             </h3>
@@ -41,12 +52,22 @@
               might be implemented!
             </p>
           </div>
-          <div class="w-1/2 flex items-center justify-end">
+          <div
+            class="
+              w-full
+              md:w-1/2
+              flex
+              items-center
+              justify-center
+              md:justify-end
+            "
+          >
             <img src="/img/creativity.png" class="rounded-full w-4/5" />
           </div>
         </div>
         <members />
       </section>
+      <section id="Specifications" class="w-screen min-h-93 bg-grad"></section>
     </div>
   </div>
 </template>
@@ -168,5 +189,14 @@ export default {
 
 .text-46 {
   font-size: 46px;
+}
+
+.bg-grad {
+  background: rgb(116, 235, 213);
+  background: linear-gradient(
+    90deg,
+    rgba(116, 235, 213, 1) 0%,
+    rgba(172, 182, 229, 1) 100%
+  );
 }
 </style>
