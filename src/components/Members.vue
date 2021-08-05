@@ -1,42 +1,47 @@
 <template>
   <div ref="container" class="w-full p-10 montserrat text-3xl">
     <h3 class="mb-6">Our {{ members.length }} Members</h3>
-    <div class="w-full flex glider">
+    <carousel :items-to-show="5" class="cursor-pointer">
       <div
         v-for="member in members"
         :key="member.name"
-        class="mx-2"
-        :style="{ minWidth: memberWidth, width: memberWidth }"
+        class="flex justify-center items-center flex-col min-w-40"
       >
-        <img class="rounded-full" :src="member.icon" />
+        <img class="rounded-full w-1/2" :src="member.icon" />
         <p class="text-xs">{{ member.name }}</p>
       </div>
-    </div>
+    </carousel>
   </div>
 </template>
 
 <script>
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+
 export default {
+  components: {
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
+  },
+
   data() {
     return {
       members: [],
+      membersLoaded: false,
     };
   },
 
   mounted() {
     this.getHiscoresJson();
-
-    var glider = new Glider(document.querySelector(".glider"), {
-      draggable: true,
-      dragVelocity: 1,
-    });
   },
 
   methods: {
     getHiscoresJson() {
       this.$http.get("highscores.json").then((res) => {
         this.members = res.data.UUID.map((x) => ({
-          icon: `https://crafatar.com/avatars/${x.UUID}?overlay=true`,
+          icon: `https://crafatar.com/renders/head/${x.UUID}?overlay=true?size=160`,
           name: x.lastKnownName,
         }));
       });
@@ -51,4 +56,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.min-w-40 {
+  min-width: 5rem;
+}
+</style>

@@ -3,7 +3,6 @@ import App from "./App.vue";
 
 import "./main.css";
 import "./reset.css";
-import "./glider.min.css";
 
 import router from "./router";
 import { store } from "./store";
