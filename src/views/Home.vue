@@ -66,6 +66,7 @@
           </div>
         </div>
         <members />
+        <Map />
       </section>
       <section id="Specifications" class="w-screen min-h-93 bg-grad"></section>
     </div>
@@ -73,7 +74,7 @@
 </template>
 
 <script>
-import { Island, Navbar, Members } from "../components";
+import { Map, Island, Navbar, Members } from "../components";
 import { ref } from "vue";
 import bgImg from "../assets/img/bg-1.jpg";
 
@@ -86,6 +87,7 @@ export default {
     Navbar,
     Island,
     Members,
+    Map,
   },
 
   inject: ["mq"],
