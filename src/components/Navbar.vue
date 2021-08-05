@@ -65,8 +65,10 @@
             font-normal
           "
         >
-          <a class="link px-4 py-4" href="#About">About</a>
-          <a class="link px-4 py-4" href="#Specifications">Specifications</a>
+          <a class="link px-4 py-4" href="#About" v-smooth-scroll>About</a>
+          <a class="link px-4 py-4" href="#Specifications" v-smooth-scroll
+            >Specifications</a
+          >
           <a class="link px-4 py-4" href="#Info">Information</a>
           <a class="link px-4 py-4" href="#Plugins">Plugins</a>
           <a class="link px-4 py-4" href="#Map">Map</a>
