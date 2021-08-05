@@ -58,7 +58,8 @@
             ml-auto
             montserrat
             uppercase
-            text-white text-sm
+            text-white text-xs
+            lg:text-sm
             w-full
             justify-end
             tracking-1
@@ -71,7 +72,6 @@
           >
           <a class="link px-4 py-4" href="#Info">Information</a>
           <a class="link px-4 py-4" href="#Plugins">Plugins</a>
-          <a class="link px-4 py-4" href="#Map">Map</a>
           <div
             class="flex items-center relative cursor-pointer"
             @click.stop="showOther = !showOther"
@@ -151,11 +151,7 @@ export default {
 
   computed: {
     isMobile() {
-      return (
-        this.mq.current == "md" ||
-        this.mq.current == "sm" ||
-        this.mq.current == "xs"
-      );
+      return this.mq.current == "sm" || this.mq.current == "xs";
     },
   },
 
