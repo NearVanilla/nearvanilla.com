@@ -1,7 +1,7 @@
 <template>
   <div ref="container" class="w-full p-10 montserrat text-3xl">
     <h3 class="mb-6">Our {{ members.length }} Members</h3>
-    <carousel :items-to-show="5" class="cursor-pointer">
+    <carousel :items-to-show="5" class="cursor-pointer mt-12">
       <div
         v-for="member in members"
         :key="member.name"
