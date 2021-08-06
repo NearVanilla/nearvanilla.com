@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="w-full p-10 montserrat text-3xl">
+  <div ref="container" class="w-full p-2 md:p-10 montserrat text-3xl">
     <h3 class="mb-6">Our {{ members.length }} Members</h3>
     <carousel :items-to-show="5" class="cursor-pointer mt-12">
       <div
@@ -8,7 +8,7 @@
         class="flex justify-center items-center flex-col min-w-40"
       >
         <img class="rounded-full w-1/2" :src="member.icon" />
-        <p class="text-xs">{{ member.name }}</p>
+        <p class="text-xxs sm:text-xs">{{ member.name }}</p>
       </div>
     </carousel>
   </div>
@@ -40,10 +40,14 @@ export default {
   methods: {
     getHiscoresJson() {
       this.$http.get("highscores.json").then((res) => {
-        this.members = res.data.UUID.map((x) => ({
-          icon: `https://crafatar.com/renders/head/${x.UUID}?overlay=true?size=160`,
-          name: x.lastKnownName,
-        }));
+        if (res.status === 200) {
+          this.members = res.data.UUID.map((x) => ({
+            icon: `https://crafatar.com/renders/head/${x.UUID}?overlay=true?size=160`,
+            name: x.lastKnownName,
+          }));
+        } else {
+          console.log(res);
+        }
       });
     },
   },
@@ -59,5 +63,18 @@ export default {
 <style scoped>
 .min-w-40 {
   min-width: 5rem;
+}
+
+/* purgecss ignore */
+.carousel__viewport {
+  overflow: hidden;
+}
+
+/* purgecss ignore */
+.carousel__track {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    position: relative;
 }
 </style>
