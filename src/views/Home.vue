@@ -19,11 +19,11 @@
         class="min-h-93 w-screen p-12 open-sans"
         style="background-color: #f0f0f0"
       >
-        <h2 class="text-center text-46 font-bold" style="color: #312f2b">
+        <h2 class="text-center text-46 font-bold mt-12" style="color: #312f2b">
           Who we are
         </h2>
         <div
-          class="flex flex-col md:flex-row items-center justify-center mx-20"
+          class="flex flex-col md:flex-row items-center justify-center mx-4 xs:mx-10 sm:mx-20"
         >
           <div
             class="
@@ -68,7 +68,7 @@
         <members />
         <Map />
       </section>
-      <section id="Specifications" class="w-screen min-h-93 bg-grad"></section>
+      <section id="Specifications" class="w-screen min-h-screen bg-grad"></section>
     </div>
   </div>
 </template>
@@ -135,7 +135,6 @@ export default {
 .scroll-down {
   position: absolute;
   bottom: 30px;
-  left: 50%;
   width: 50px;
   height: 50px;
   border: 2px solid #fff;
