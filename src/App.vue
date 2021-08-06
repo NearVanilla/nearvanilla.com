@@ -64,4 +64,9 @@ body {
 .border-yellow {
   border-color: #fed136;
 }
+
+.text-xxs{
+  font-size: 0.5rem;
+  line-height:0.9rem;
+}
 </style>
