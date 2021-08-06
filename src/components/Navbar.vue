@@ -90,7 +90,8 @@
                 flex flex-col
                 text-left
                 rounded
-                leading-none
+                leading-none 
+                flex-nowrap
               "
             >
               <span class="link pt-6 pb-4 pl-4 pr-10">APPLY</span>
@@ -105,7 +106,7 @@
     class="fixed top-0 left-0 right-0 z-10 h-auto py-2 px-4 bg-gray-222"
     v-else
   >
-    <div class="mx-24 flex items-center justify-between">
+    <div class="mx-10 flex items-center justify-between">
       <a
         href="#page-top"
         class="
