@@ -1,5 +1,5 @@
 <template>
-  <div class="w-4/5 min-h-84 mx-auto">
+  <div class="w-full md:w-4/5 min-h-84 flex justify-center items-center flex-col">
     <div class="text-center">
       <h2 class="text-4xl font-bold m-6">Our map</h2>
     </div>
@@ -20,7 +20,10 @@
         class="
           bg-yellow
           border-yellow
-          text-white text-xl
+          text-white 
+          xs:text-sm
+          sm:text-xl
+          text-xs
           leading-normal
           rounded-md
           border
@@ -29,6 +32,7 @@
           uppercase
           py-4
           px-6
+          whitespace-nowrap
         "
         >See the full map</a
       >
