@@ -5,7 +5,10 @@ set -euo pipefail
 # Base config
 ref="${1:-refs/heads/master}"
 
-url="https://github.com/pdinklag/MinecraftStats/archive/${ref}.zip"
+#repo="pdinklag/MinecraftStats"
+repo="Prof-Bloodstone/MinecraftStats"
+
+url="https://github.com/${repo}/archive/${ref}.zip"
 
 webdir="src/awards/"
 award_scripts="scripts/awards/"
