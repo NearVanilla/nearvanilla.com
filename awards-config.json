@@ -1,33 +1,40 @@
 {
-    "configVersion": 1,
-    "database": "data",
-    "server": {
-        "sources": [
-            {
-                "path": "../../../../server-config/survival/",
-                "worldName": "world"
-            }
-        ],
-        "customName": "NearVanilla"
-    },
-    "client": {
-        "playersPerPage": 100,
-        "playerCacheUUIDPrefix": 2,
-        "showLastOnline": true
-    },
-    "players": {
-        "profileUpdateInterval": 3,
-        "updateInactive": false,
-        "inactiveDays": 25,
-        "minPlaytime": 60,
-        "excludeBanned": true,
-        "excludeOps": false,
-        "excludeUUIDs": []
-    },
-    "crown": {
-        "gold": 4,
-        "silver": 2,
-        "bronze": 1
-    },
-    "events": []
-}
+  "configVersion": 1,
+  "database": "data",
+  "server": {
+    "sources": [
+      {
+        "path": "../../../../server-config/survival/",
+        "worldName": "world"
+      }
+    ],
+    "customName": "NearVanilla"
+  },
+  "client": {
+    "playersPerPage": 100,
+    "playerCacheUUIDPrefix": 2,
+    "showLastOnline": true
+  },
+  "players": {
+    "profileUpdateInterval": 3,
+    "updateInactive": false,
+    "inactiveDays": 25,
+    "minPlaytime": 60,
+    "excludeBanned": true,
+    "excludeOps": false,
+    "excludeUUIDs": []
+  },
+  "crown": {
+    "gold": 4,
+    "silver": 2,
+    "bronze": 1
+  },
+  "events": [
+    {
+      "name": "First_Awards_Event",
+      "title": "Cookie Eating Challenge",
+      "stat": "cookies_eaten",
+      "startTime": "2021-08-08 7:00",
+      "endTime": "2021-08-14 24:00"
+    }
+  ]
