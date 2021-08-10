@@ -136,6 +136,8 @@ dbPlayerListActiveFilename = os.path.join(dbPlayerListPath, 'active{}.json.gz')
 if config.server.customName:
     serverName = config.server.customName
 else:
+    serverName = None
+
     p = re.compile('^motd=(.+)$')
     with open(os.path.join(primaryServerPath, 'server.properties'), encoding='utf-8') as f:
         for line in f:
@@ -143,6 +145,10 @@ else:
             if m:
                 serverName = javaproperties.unescape(m.group(1)).replace('\n', '<br>')
                 break
+
+    if not serverName:
+        serverName = ''
+        print('Server name could not be extracted from server.properties - does it contain a "motd" line?')
 
 # try and load usercache
 usercache = dict()
@@ -388,20 +394,23 @@ for uuid, player in players.items():
         for mcstat in mcstats.registry + eventStats:
             if mcstat.isEligible(version):
                 value = mcstat.read(stats)
-                if mcstat.playerStatRelevant:
-                    if mcstat.name in playerStats:
-                        value = mcstat.aggregate(playerStats[mcstat.name], value)
-                    
-                    playerStats[mcstat.name] = value
+                if mcstat.name in playerStats:
+                    value = mcstat.aggregate(playerStats[mcstat.name], value)
+                
+                playerStats[mcstat.name] = value
 
     # enter into rankings
     for mcstat in mcstats.registry + eventStats:
         if mcstat.name in playerStats:
             value = playerStats[mcstat.name]['value']
-            playerStats[mcstat.name] = {'value': value} # collapse
             
             if mcstat.canEnterRanking(uuid, active):
                 mcstat.enter(uuid, value)
+
+            if mcstat.playerStatRelevant:
+                playerStats[mcstat.name] = {'value': value} # collapse
+            else:
+                del playerStats[mcstat.name] # we don't need this anymore
 
     # init crown score
     if active:
@@ -593,8 +602,6 @@ for uuid in summaryPlayerIds:
         'skin': player['skin'] if ('skin' in player) else False,
         'last': player['last'],
     }
-
-# TODO: summarize events (id, display name, current best)
 
 # write summary for client
 summary = {

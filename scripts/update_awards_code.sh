@@ -5,8 +5,8 @@ set -euo pipefail
 # Base config
 ref="${1:-refs/heads/master}"
 
-#repo="pdinklag/MinecraftStats"
-repo="Prof-Bloodstone/MinecraftStats"
+repo="pdinklag/MinecraftStats"
+#repo="Prof-Bloodstone/MinecraftStats"
 
 url="https://github.com/${repo}/archive/${ref}.zip"
 
