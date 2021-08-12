@@ -91,7 +91,7 @@
             line-height-1
           "
         >
-          <div class="bg-gray-100 mx-1 rounded-md p-4">
+          <div class="server-stat mx-1 rounded-md p-6">
             <font-awesome-icon class="text-7xl" :icon="['fas', 'microchip']" />
             <p class="text-3xl font-bold my-4">Processor</p>
             <p>
@@ -101,7 +101,7 @@
               encounter.
             </p>
           </div>
-          <div class="bg-gray-100 mx-1 rounded-md p-4">
+          <div class="server-stat mx-1 rounded-md p-6">
             <font-awesome-icon class="text-7xl" :icon="['fas', 'hdd']" />
             <p class="text-3xl font-bold my-4">Storage</p>
             <p>
@@ -113,7 +113,7 @@
               have on our players.
             </p>
           </div>
-          <div class="bg-gray-100 mx-1 rounded-md p-4">
+          <div class="server-stat mx-1 rounded-md p-6">
             <font-awesome-icon class="text-7xl" :icon="['fas', 'memory']" />
             <p class="text-3xl font-bold my-4">RAM</p>
             <p>
@@ -122,7 +122,7 @@
               data and can enjoy a hassle-free environment.
             </p>
           </div>
-          <div class="bg-gray-100 mx-1 rounded-md p-4">
+          <div class="server-stat mx-1 rounded-md p-6">
             <font-awesome-icon
               class="text-7xl"
               :icon="['fas', 'network-wired']"
@@ -210,8 +210,6 @@ export default {
     Map,
   },
 
-  inject: ["mq"],
-
   setup(props, context) {
     const shrunkNav = ref(false);
     const bg = bgImg;
@@ -249,7 +247,6 @@ export default {
     getIconUrl(str) {
       str = str.replace(/\s/g, "");
       str = str.toLowerCase();
-
       return `/img/pluginIcons/${str}.png`;
     },
   },
@@ -330,6 +327,7 @@ export default {
     rgba(116, 235, 213, 1) 0%,
     rgba(172, 182, 229, 1) 100%
   );
+  background-attachment: fixed;
 }
 
 .line-height-1 {
@@ -361,7 +359,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden; /* Safari */
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
@@ -369,4 +367,13 @@ export default {
   transform: rotateY(180deg);
 }
 /* END FLIP */
+
+.server-stat {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 16px 0 rgba(61, 138, 148, 0.37);
+  backdrop-filter: blur(6.5px);
+  -webkit-backdrop-filter: blur(6.5px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
 </style>
