@@ -19,11 +19,19 @@
         class="min-h-93 w-screen p-12 open-sans"
         style="background-color: #f0f0f0"
       >
-        <h2 class="text-center text-46 font-bold mt-12" style="color: #312f2b">
+        <h2 class="text-center text-46 font-bold mt-8" style="color: #312f2b">
           Who we are
         </h2>
         <div
-          class="flex flex-col md:flex-row items-center justify-center mx-4 xs:mx-10 sm:mx-20"
+          class="
+            flex flex-col
+            md:flex-row
+            items-center
+            justify-center
+            mx-4
+            xs:mx-10
+            sm:mx-20
+          "
         >
           <div
             class="
@@ -68,7 +76,118 @@
         <members />
         <Map />
       </section>
-      <section id="Specifications" class="w-screen min-h-screen bg-grad"></section>
+      <section id="Specifications" class="w-screen min-h-screen bg-grad p-12">
+        <h3 class="text-center text-gray-900 text-46 font-bold mt-8">
+          Server Info
+        </h3>
+        <div
+          class="
+            grid grid-cols-1
+            sm:grid-cols-2
+            xl:grid-cols-4
+            gap-12
+            mt-12
+            montserrat
+            line-height-1
+          "
+        >
+          <div class="bg-gray-100 mx-1 rounded-md p-4">
+            <font-awesome-icon class="text-7xl" :icon="['fas', 'microchip']" />
+            <p class="text-3xl font-bold my-4">Processor</p>
+            <p>
+              An octa-core processor reaching up to 5Ghz gives us seamless
+              gameplay. Having a processor that can keep up with the server
+              reduces the amount of lag spikes and rubber banding our players
+              encounter.
+            </p>
+          </div>
+          <div class="bg-gray-100 mx-1 rounded-md p-4">
+            <font-awesome-icon class="text-7xl" :icon="['fas', 'hdd']" />
+            <p class="text-3xl font-bold my-4">Storage</p>
+            <p>
+              Despite our quality specifications, the world of technology can be
+              unpredictable. Although these unexpected occurrences are rare, we
+              are still prepared with 1TB of SSD storage that allows bi-hourly
+              back-ups of our world. Should any corruption occur, we can restore
+              lost or corrupted data quickly and minimize the effect it could
+              have on our players.
+            </p>
+          </div>
+          <div class="bg-gray-100 mx-1 rounded-md p-4">
+            <font-awesome-icon class="text-7xl" :icon="['fas', 'memory']" />
+            <p class="text-3xl font-bold my-4">RAM</p>
+            <p>
+              With 8GB of dedicated RAM for the server, our players don't have
+              to worry about random server crashes that could result in loss of
+              data and can enjoy a hassle-free environment.
+            </p>
+          </div>
+          <div class="bg-gray-100 mx-1 rounded-md p-4">
+            <font-awesome-icon
+              class="text-7xl"
+              :icon="['fas', 'network-wired']"
+            />
+            <p class="text-3xl font-bold my-4">Network</p>
+            <p>
+              When running a multiplayer server like ours, speed and resources
+              are everthing. The Near Vanilla server and website run on a
+              dedicated, Linux based server that is equipped and designed to
+              give players the best play experience possible on a butter-smooth
+              server.
+            </p>
+            <div class="flex flex-nowrap flex-col justify-between m-6">
+              <p><span class="font-bold text-xs">DOWN:</span> 988 Mbit/s</p>
+              <p><span class="font-bold text-xs">UP:</span> 924 Mbit/s</p>
+              <p><span class="font-bold text-xs">PING:</span> 1 ms</p>
+            </div>
+          </div>
+        </div>
+        <h3 class="text-center text-gray-900 text-46 font-bold my-10">
+          Our Plugins
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-12">
+          <div v-for="plugin in plugins" :key="plugin.name" class="card">
+            <div class="card-inner montserrat">
+              <div
+                class="
+                  front
+                  flex flex-col
+                  justify-between
+                  items-center
+                  p-6
+                  bg-gray-100
+                  rounded-md
+                "
+              >
+                <img :src="getIconUrl(plugin.name)" class="w-1/3" />
+                <h3 class="font-bold text-3xl">{{ plugin.name }}</h3>
+                <p v-html="plugin.excerpt"></p>
+              </div>
+              <div
+                class="
+                  back
+                  bg-gray-100
+                  rounded-md
+                  flex flex-col
+                  justify-center
+                  p-8
+                  items-center
+                "
+              >
+                <h3 class="font-bold text-green-900 mb-12 text-2xl">
+                  {{ plugin.name }}
+                </h3>
+                <p class="mb-12" v-html="plugin.info"></p>
+                <img
+                  class="w-1/6"
+                  v-if="plugin.on"
+                  :src="getIconUrl(plugin.on)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </template>
@@ -77,6 +196,7 @@
 import { Map, Island, Navbar, Members } from "../components";
 import { ref } from "vue";
 import bgImg from "../assets/img/bg-1.jpg";
+import { pluginsList } from "../plugins.js";
 
 export default {
   name: "Home",
@@ -102,7 +222,9 @@ export default {
       } else shrunkNav.value = false;
     };
 
-    return { shrunkNav, bg, handleScroll };
+    const plugins = pluginsList;
+
+    return { shrunkNav, bg, handleScroll, plugins };
   },
 
   created() {
@@ -120,6 +242,15 @@ export default {
         this.mq.current == "sm" ||
         this.mq.current == "xs"
       );
+    },
+  },
+
+  methods: {
+    getIconUrl(str) {
+      str = str.replace(/\s/g, "");
+      str = str.toLowerCase();
+
+      return `/img/pluginIcons/${str}.png`;
     },
   },
 };
@@ -200,4 +331,42 @@ export default {
     rgba(172, 182, 229, 1) 100%
   );
 }
+
+.line-height-1 {
+  line-height: 1.2;
+}
+
+/* START FLIP */
+.card {
+  background-color: transparent;
+  min-height: 312px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+/* END FLIP */
 </style>
