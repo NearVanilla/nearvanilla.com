@@ -14,8 +14,15 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VueSmoothScroll from "vue3-smooth-scroll";
 
 /* Font Awesome icons */
-import { faBars, faCaretDown } from "@fortawesome/free-solid-svg-icons";
-library.add(faBars, faCaretDown);
+import {
+  faBars,
+  faCaretDown,
+  faHdd,
+  faMemory,
+  faMicrochip,
+  faNetworkWired,
+} from "@fortawesome/free-solid-svg-icons";
+library.add(faBars, faCaretDown, faMicrochip, faHdd, faMemory, faNetworkWired);
 
 import axios from "axios";
 
