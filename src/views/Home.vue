@@ -77,7 +77,15 @@
         <Map />
       </section>
       <section id="Specifications" class="w-screen min-h-screen bg-grad p-12">
-        <h3 class="text-center text-gray-900 text-46 font-bold mt-8">
+        <h3
+          class="
+            text-center text-white text-46
+            font-bold
+            mb-10
+            p-12
+            border-2 border-white border-solid border-l-0 border-r-0
+          "
+        >
           Server Info
         </h3>
         <div
@@ -89,6 +97,7 @@
             mt-12
             montserrat
             line-height-1
+            text-gray-800
           "
         >
           <div class="server-stat mx-1 rounded-md p-6">
@@ -142,7 +151,15 @@
             </div>
           </div>
         </div>
-        <h3 class="text-center text-gray-900 text-46 font-bold my-10">
+        <h3
+          class="
+            text-center text-white text-46
+            font-bold
+            my-10
+            p-12
+            border-2 border-white border-solid border-l-0 border-r-0
+          "
+        >
           Our Plugins
         </h3>
         <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-12">
@@ -169,15 +186,16 @@
                   bg-gray-100
                   rounded-md
                   flex flex-col
-                  justify-center
+                  justify-between
                   p-8
                   items-center
+                  h-full
                 "
               >
-                <h3 class="font-bold text-green-900 mb-12 text-2xl">
+                <h3 class="font-bold text-green-900 text-2xl">
                   {{ plugin.name }}
                 </h3>
-                <p class="mb-12" v-html="plugin.info"></p>
+                <p v-html="plugin.info"></p>
                 <img
                   class="w-1/6"
                   v-if="plugin.on"
@@ -325,7 +343,7 @@ export default {
   background: linear-gradient(
     90deg,
     rgba(116, 235, 213, 1) 0%,
-    rgba(172, 182, 229, 1) 100%
+    rgba(172, 203, 229, 1) 100%
   );
   background-attachment: fixed;
 }
@@ -369,7 +387,7 @@ export default {
 /* END FLIP */
 
 .server-stat {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.35);
   box-shadow: 0 2px 16px 0 rgba(61, 138, 148, 0.37);
   backdrop-filter: blur(6.5px);
   -webkit-backdrop-filter: blur(6.5px);
