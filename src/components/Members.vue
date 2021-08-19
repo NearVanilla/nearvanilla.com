@@ -5,10 +5,10 @@
       <div
         v-for="member in members"
         :key="member.name"
-        class="flex justify-center items-center flex-col min-w-40"
+        class="flex justify-center items-center flex-col min-w-20 lg:min-w-28"
       >
         <img class="rounded-full w-1/2" :src="member.icon" />
-        <p class="text-xxs sm:text-xs">{{ member.name }}</p>
+        <p class="mt-2 text-xxs sm:text-xs">{{ member.name }}</p>
       </div>
     </carousel>
   </div>
@@ -42,7 +42,7 @@ export default {
       this.$http.get("highscores.json").then((res) => {
         if (res.status === 200) {
           this.members = res.data.UUID.map((x) => ({
-            icon: `https://crafatar.com/renders/head/${x.UUID}?overlay=true?size=160`,
+            icon: `https://crafatar.com/avatars/${x.UUID}?overlay=true?size=160`,
             name: x.lastKnownName,
           }));
         } else {
@@ -54,15 +54,21 @@ export default {
 
   computed: {
     memberWidth() {
-      return this.$refs.container.clientWidth / 16 + "px";
+      return this.$refs.container.clientWidth / 10 + "px";
     },
   },
 };
 </script>
 
 <style scoped>
-.min-w-40 {
-  min-width: 5rem;
+@responsive {
+  .min-w-28 {
+    min-width: 7.5rem;
+  }
+
+  .min-w-20 {
+    min-width: 6rem;
+  }
 }
 
 /* purgecss ignore */
@@ -72,9 +78,9 @@ export default {
 
 /* purgecss ignore */
 .carousel__track {
-    display: flex;
-    margin: 0;
-    padding: 0;
-    position: relative;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 </style>
