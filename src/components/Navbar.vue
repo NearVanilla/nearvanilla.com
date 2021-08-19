@@ -19,6 +19,11 @@
     v-if="!isMobile"
   >
     <div
+      class="bg-gray-222 py-0 fade-bar absolute w-full h-full"
+      :style="{ top: -(100 - scrollPos) + '%' }"
+      :class="{ hidden: scrollPos >= 105 }"
+    ></div>
+    <div
       class="
         flex
         items-center
@@ -26,9 +31,10 @@
         mx-auto
         px-4
         w-full w-540
-        md:w-720
+        md:w-960
         lg:w-960
         xl:w-1140
+        relative
       "
     >
       <a
@@ -40,10 +46,13 @@
           inline-block
           mr-4
           py-1.5
+          text-xl
+          md:text-2xl
+          lg:text-5xl
           whitespace-nowrap
           leading-normal
         "
-        :class="shrunk ? 'text-xl' : 'text-5xl'"
+        :class="shrunk ? 'minimise' : ''"
         v-smooth-scroll
       >
         Near Vanilla
@@ -64,40 +73,22 @@
             justify-end
             tracking-1
             font-normal
+            whitespace-nowrap
           "
         >
           <a class="link px-4 py-4" href="#About" v-smooth-scroll>About</a>
           <a class="link px-4 py-4" href="#Specifications" v-smooth-scroll
-            >Specifications</a
+            >Server Info</a
           >
-          <a class="link px-4 py-4" href="#Info">Information</a>
-          <a class="link px-4 py-4" href="#Plugins">Plugins</a>
-          <div
-            class="flex items-center relative cursor-pointer"
-            @click.stop="showOther = !showOther"
+          <a class="link px-4 py-4" href="https://nearvanilla.com/apply"
+            >Apply</a
           >
-            <div class="link">
-              <span class="px-4 py-4">Other</span>
-              <font-awesome-icon :icon="['fas', 'caret-down']" />
-            </div>
-            <div
-              v-if="showOther"
-              style="background-color: #343434"
-              class="
-                absolute
-                top-14
-                left-0
-                flex flex-col
-                text-left
-                rounded
-                leading-none 
-                flex-nowrap
-              "
-            >
-              <span class="link pt-6 pb-4 pl-4 pr-10">APPLY</span>
-              <span class="link pt-4 pb-6 pl-4 pr-10">HIGHSCORES</span>
-            </div>
-          </div>
+          <a class="link px-4 py-4" href="https://nearvanilla.com/highscores"
+            >Highscores</a
+          >
+          <a class="link px-4 py-4" href="https://nearvanilla.com/awards"
+            >Awards</a
+          >
         </div>
       </div>
     </div>
@@ -139,26 +130,24 @@ export default {
   props: {
     shrunk: {
       required: true,
-      default: () => false,
       value: Boolean,
+    },
+
+    scrollPos: {
+      required: true,
+      value: Number,
     },
   },
 
   data() {
     return {
-      showOther: false,
+      showNav: false,
     };
   },
 
   computed: {
     isMobile() {
       return this.mq.current == "sm" || this.mq.current == "xs";
-    },
-  },
-
-  methods: {
-    log(str) {
-      console.log(str);
     },
   },
 };
@@ -198,5 +187,14 @@ export default {
 
 .tracking-1 {
   letter-spacing: 1px;
+}
+
+.minimise {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.fade-bar {
+  left: 0;
 }
 </style>
