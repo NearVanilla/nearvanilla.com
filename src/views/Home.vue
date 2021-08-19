@@ -1,11 +1,24 @@
 <template>
   <div class="w-screen scroll-container" id="page-top">
-    <navbar :shrunk="shrunkNav" />
+    <navbar :shrunk="shrunkNav" :scrollPos="scrollPos" />
     <div>
       <div
         class="w-full h-screen bg-cover bg-no-repeat bg-center bg-fixed"
-        :style="{ backgroundImage: 'url(' + bg + ')' }"
+        ref="landing"
       >
+        <div
+          class="
+            absolute
+            top-0
+            left-0
+            w-screen
+            h-screen
+            bg-cover bg-no-repeat bg-center bg-fixed
+            fade
+          "
+          ref="bgBlur"
+          :style="{ backgroundImage: 'url(' + bgBlur + ')' }"
+        ></div>
         <div class="flex flex-wrap justify-center items-center w-full h-full">
           <island style="width: 900px; margin-top: -100px" v-if="!isMobile" />
           <div v-else class="flex items-center justify-center mt-20 h-4/5">
@@ -162,59 +175,23 @@
         >
           Our Plugins
         </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-12">
-          <div v-for="plugin in plugins" :key="plugin.name" class="card">
-            <div class="card-inner montserrat">
-              <div
-                class="
-                  front
-                  flex flex-col
-                  justify-between
-                  items-center
-                  p-6
-                  bg-gray-100
-                  rounded-md
-                "
-              >
-                <img :src="getIconUrl(plugin.name)" class="w-1/3" />
-                <h3 class="font-bold text-3xl">{{ plugin.name }}</h3>
-                <p v-html="plugin.excerpt"></p>
-              </div>
-              <div
-                class="
-                  back
-                  bg-gray-100
-                  rounded-md
-                  flex flex-col
-                  justify-between
-                  p-8
-                  items-center
-                  h-full
-                "
-              >
-                <h3 class="font-bold text-green-900 text-2xl">
-                  {{ plugin.name }}
-                </h3>
-                <p v-html="plugin.info"></p>
-                <img
-                  class="w-1/6"
-                  v-if="plugin.on"
-                  :src="getIconUrl(plugin.on)"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Plugins />
       </section>
+      <footer class="bg-2b m-0 p-6">
+        <div>
+          <p class="text-white mb-2">© Near Vanilla. All rights reserved.</p>
+          <p class="text-gray-500">Play @ play.nearvanilla.com</p>
+        </div>
+      </footer>
     </div>
   </div>
 </template>
 
 <script>
-import { Map, Island, Navbar, Members } from "../components";
+import { Map, Island, Navbar, Members, Plugins } from "../components";
 import { ref } from "vue";
 import bgImg from "../assets/img/bg-1.jpg";
-import { pluginsList } from "../plugins.js";
+import bgBlurImg from "../assets/img/bg-blur.jpg";
 
 export default {
   name: "Home",
@@ -226,29 +203,50 @@ export default {
     Island,
     Members,
     Map,
+    Plugins,
   },
 
   setup(props, context) {
     const shrunkNav = ref(false);
+    const scrollPos = ref(0);
+
     const bg = bgImg;
+    const bgBlur = bgBlurImg;
 
     const handleScroll = (e) => {
-      if (window.scrollY > 100) {
-        shrunkNav.value = true;
-      } else shrunkNav.value = false;
+      shrunkNav.value = window.scrollY > 100;
+      scrollPos.value = window.scrollY;
     };
 
-    const plugins = pluginsList;
-
-    return { shrunkNav, bg, handleScroll, plugins };
+    return { shrunkNav, scrollPos, bg, bgBlur, handleScroll };
   },
 
   created() {
     window.addEventListener("scroll", this.handleScroll);
   },
 
+  mounted() {
+    const landing = this.$refs.landing;
+    const blur = this.$refs.bgBlur;
+    this.loadBg(this.bg).then(() => {
+      landing.style.backgroundImage = "url(" + this.bg + ")";
+      blur.classList.add("hide");
+    });
+  },
+
   destroyed() {
     window.removeEventListener("scroll", () => {});
+  },
+
+  methods: {
+    loadBg(src) {
+      return new Promise(function (resolve, reject) {
+        const image = new Image();
+        image.addEventListener("load", resolve);
+        image.addEventListener("error", reject);
+        image.src = src;
+      });
+    },
   },
 
   computed: {
@@ -258,14 +256,6 @@ export default {
         this.mq.current == "sm" ||
         this.mq.current == "xs"
       );
-    },
-  },
-
-  methods: {
-    getIconUrl(str) {
-      str = str.replace(/\s/g, "");
-      str = str.toLowerCase();
-      return `/img/pluginIcons/${str}.png`;
     },
   },
 };
@@ -341,7 +331,7 @@ export default {
 .bg-grad {
   background: rgb(116, 235, 213);
   background: linear-gradient(
-    90deg,
+    180deg,
     rgba(116, 235, 213, 1) 0%,
     rgba(172, 203, 229, 1) 100%
   );
@@ -352,40 +342,6 @@ export default {
   line-height: 1.2;
 }
 
-/* START FLIP */
-.card {
-  background-color: transparent;
-  min-height: 312px;
-  perspective: 1000px;
-}
-
-.card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.8s;
-  transform-style: preserve-3d;
-}
-
-.card:hover .card-inner {
-  transform: rotateY(180deg);
-}
-
-.front,
-.back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.back {
-  transform: rotateY(180deg);
-}
-/* END FLIP */
-
 .server-stat {
   background: rgba(255, 255, 255, 0.35);
   box-shadow: 0 2px 16px 0 rgba(61, 138, 148, 0.37);
@@ -393,5 +349,20 @@ export default {
   -webkit-backdrop-filter: blur(6.5px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.bg-2b {
+  background-color: #2b2b2b;
+}
+
+.fade {
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+.hide {
+  opacity: 0;
 }
 </style>
