@@ -109,6 +109,7 @@
           py-1.5
           whitespace-nowrap
           text-xl
+          relative
         "
         v-smooth-scroll
       >
@@ -116,10 +117,34 @@
       </a>
       <div
         class="custom-yellow p-3 rounded text-xs leading-none cursor-pointer"
+        @click="showNav = !showNav"
       >
         <font-awesome-icon class="text-gray-900" :icon="['fas', 'bars']" />
       </div>
     </div>
+    <transition name="drop-down">
+      <div
+        v-if="showNav"
+        class="
+         z--1
+          absolute
+          flex flex-col
+          text-white
+          tracking-wide
+          montserrat
+          text-sm
+          bg-gray-222
+          w-screen
+          left-0
+        "
+      >
+        <a class="py-3" href="#About" v-smooth-scroll>ABOUT</a>
+        <a class="py-3" href="#Specifications" v-smooth-scroll>SERVER INFO</a>
+        <a class="py-3" href="https://nearvanilla.com/apply">APPLY</a>
+        <a class="py-3" href="https://nearvanilla.com/highscores">HIGHSCORES</a>
+        <a class="py-3" href="https://nearvanilla.com/awards">AWARDS</a>
+      </div>
+    </transition>
   </nav>
 </template>
 
@@ -196,5 +221,26 @@ export default {
 
 .fade-bar {
   left: 0;
+}
+
+.drop-down-enter-active {
+  animation: drop-down 0.8s;
+}
+
+.drop-down-leave-active {
+  animation: drop-down 0.8s reverse;
+}
+
+@keyframes drop-down {
+  from {
+    margin-top: -100%;
+  }
+  to {
+    margin-top: 0;
+  }
+}
+
+.z--1{
+  z-index: -1
 }
 </style>
