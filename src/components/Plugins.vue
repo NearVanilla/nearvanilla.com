@@ -62,6 +62,7 @@
               p-6
               bg-gray-100
               rounded-md
+              basis-0
             "
           >
             <img :src="getIconUrl(plugin.name)" class="w-1/3" />
@@ -152,5 +153,9 @@ export default {
 
 .back {
   transform: rotateY(180deg);
+}
+
+.basis-0{
+  flex-basis:0;
 }
 </style>
