@@ -46,7 +46,7 @@ var highscore = (function () {
      * Calculate deaths per day from "Deaths" and "Played Minutes" for players with >= 24h of gameplay
      */
     function calculateDeathsPerDay() {
-        const playerPlayedMinutes = generatePlayerScoreMap(highscoreObject.scores["ts_PlayedMinutes"].scores);
+        const playerPlayedMinutes = generatePlayerScoreMap(highscoreObject.scores["ts_PlayTime"].scores);
         const playerDeaths = generatePlayerScoreMap(highscoreObject.scores["ts_Deaths"].scores);
 
         let deathPerDayScores = [];
@@ -103,7 +103,7 @@ var highscore = (function () {
     }
 
     function shortenPlayedMinutesText() {
-        for(let score of highscoreObject.scores["ts_PlayedMinutes"].scores) {
+        for(let score of highscoreObject.scores["ts_PlayTime"].scores) {
             score.score = score.score.replace(/minutes$/, 'min');
         }
     }
