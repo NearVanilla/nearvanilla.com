@@ -107,6 +107,10 @@ mcstats.formatValue = function(value, unit, compact = false) {
             }
             break;
 
+        case 'tenths_of_heart':
+            value = formatFloat(parseInt(value) / 10.0);
+            break;
+
         case 'int':
             value = formatInt(parseInt(value));
             break;
@@ -251,7 +255,7 @@ mcstats.playerWidget = function(uuid, skinCss = 'textw-1_5 texth-1_5 align-basel
             return `<span id=${uuid}>${uuid}</span>`;
         }
     } else {
-        return `<span class="text-muted">(nobody)</span>`;
+        return `<span class="text-muted">${mcstats.localize('nobody')}</span>`;
     }
 };
 

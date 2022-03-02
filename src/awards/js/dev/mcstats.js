@@ -21,12 +21,6 @@ var mcstats = {
     players: {},
 };
 
-// Initialize client
-mcstats.init = function() {
-    mcstats.infoBox.style.display = 'block';
-    mcstats.content.style.display = 'block';
-}
-
 // Make sure a certain player is cached
 mcstats.cachePlayer = function(uuid, successFunc) {
     if(uuid in mcstats.players) {
@@ -139,4 +133,7 @@ window.onhashchange = function() {
     
     // collapse navbar
     navbar.hide();
+
+    // update URLs in language selection
+    mcstats.updateLangSelect();
 };

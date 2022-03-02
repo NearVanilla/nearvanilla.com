@@ -4,8 +4,6 @@ mcstats.registry.append(
     mcstats.MinecraftStat(
         'eat_junkfood',
         {
-            'title': 'Bottom Feeder',
-            'desc': 'Junkfood items eaten',
             'unit': 'int',
         },
         mcstats.StatSumReader([
