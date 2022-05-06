@@ -1,17 +1,25 @@
 <template>
-  <router-view />
+  <div>
+    <navbar :shrunk="shrunkNav" :scrollPos="scrollPos" />
+    <router-view />
+  </div>
 </template>
 
-<script>
+<script setup>
+import { ref, onUnmounted } from "vue";
 import { useMq } from "vue3-mq";
+import { Navbar } from "./components";
+const mq = useMq();
 
-export default {
-  name: "App",
+const shrunkNav = ref(false);
+const scrollPos = ref(0);
 
-  setup() {
-    const mq = useMq();
-  },
+const handleScroll = (e) => {
+  shrunkNav.value = window.scrollY > 100;
+  scrollPos.value = window.scrollY;
 };
+window.addEventListener("scroll", handleScroll);
+onUnmounted(() => window.removeEventListener("scroll", () => {}));
 </script>
 
 <style>
@@ -65,8 +73,8 @@ body {
   border-color: #fed136;
 }
 
-.text-xxs{
+.text-xxs {
   font-size: 0.5rem;
-  line-height:0.9rem;
+  line-height: 0.9rem;
 }
 </style>

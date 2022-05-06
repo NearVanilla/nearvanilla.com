@@ -14,50 +14,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { onMounted, ref, computed, inject } from "vue";
 
-export default {
-  components: {
-    Carousel,
-    Slide,
-    Pagination,
-    Navigation,
-  },
+const members = ref([]);
+const membersLoaded = ref(false);
+const container = ref(null);
+const http = inject("http")
 
-  data() {
-    return {
-      members: [],
-      membersLoaded: false,
-    };
-  },
+onMounted(async () => await getHiscoresJson());
+const getHiscoresJson = async () => {
+  const res = await http.get("highscores.json");
+  if (res.status !== 200) {
+    console.log(res);
+    return;
+  }
 
-  mounted() {
-    this.getHiscoresJson();
-  },
-
-  methods: {
-    getHiscoresJson() {
-      this.$http.get("highscores.json").then((res) => {
-        if (res.status === 200) {
-          this.members = res.data.UUID.map((x) => ({
-            icon: `https://crafatar.com/avatars/${x.UUID}?overlay=true?size=160`,
-            name: x.lastKnownName,
-          }));
-        } else {
-          console.log(res);
-        }
-      });
-    },
-  },
-
-  computed: {
-    memberWidth() {
-      return this.$refs.container.clientWidth / 10 + "px";
-    },
-  },
+  members.value = res.data.UUID.map((x) => ({
+    icon: `https://crafatar.com/avatars/${x.UUID}?overlay=true?size=160`,
+    name: x.lastKnownName,
+  }));
 };
+
+const memberWidth = computed(() => container.value.clientWidth / 10 + "px");
 </script>
 
 <style scoped>

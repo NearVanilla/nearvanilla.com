@@ -1,22 +1,13 @@
 <template>
   <div class="w-screen scroll-container" id="page-top">
-    <navbar :shrunk="shrunkNav" :scrollPos="scrollPos" />
     <div>
       <div
         class="w-full h-screen bg-cover bg-no-repeat bg-center bg-fixed"
         ref="landing"
       >
         <div
-          class="
-            absolute
-            top-0
-            left-0
-            w-screen
-            h-screen
-            bg-cover bg-no-repeat bg-center bg-fixed
-            fade
-          "
-          ref="bgBlur"
+          class="absolute top-0 left-0 w-screen h-screen bg-cover bg-no-repeat bg-center bg-fixed fade"
+          ref="blur"
           :style="{ backgroundImage: 'url(' + bgBlur + ')' }"
         ></div>
         <div class="flex flex-wrap justify-center items-center w-full h-full">
@@ -36,25 +27,10 @@
           Who we are
         </h2>
         <div
-          class="
-            flex flex-col
-            md:flex-row
-            items-center
-            justify-center
-            mx-4
-            xs:mx-10
-            sm:mx-20
-          "
+          class="flex flex-col md:flex-row items-center justify-center mx-4 xs:mx-10 sm:mx-20"
         >
           <div
-            class="
-              flex flex-col
-              w-full
-              text-center
-              md:text-left md:w-1/2
-              lg:w-1/3
-              text-left
-            "
+            class="flex flex-col w-full text-center md:text-left md:w-1/2 lg:w-1/3"
           >
             <h3 class="montserrat text-3xl leading-tight mb-6">
               We live with the <span class="font-bold">community</span>
@@ -74,14 +50,7 @@
             </p>
           </div>
           <div
-            class="
-              w-full
-              md:w-1/2
-              flex
-              items-center
-              justify-center
-              md:justify-end
-            "
+            class="w-full md:w-1/2 flex items-center justify-center md:justify-end"
           >
             <img src="/img/creativity.png" class="rounded-full w-4/5" />
           </div>
@@ -91,27 +60,12 @@
       </section>
       <section id="Specifications" class="w-screen min-h-screen bg-grad p-12">
         <h3
-          class="
-            text-center text-white text-46
-            font-bold
-            mb-10
-            p-12
-            border-2 border-white border-solid border-l-0 border-r-0
-          "
+          class="text-center text-white text-46 font-bold mb-10 p-12 border-2 border-white border-solid border-l-0 border-r-0"
         >
           Server Info
         </h3>
         <div
-          class="
-            grid grid-cols-1
-            sm:grid-cols-2
-            xl:grid-cols-4
-            gap-12
-            mt-12
-            montserrat
-            line-height-1
-            text-gray-800
-          "
+          class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-12 mt-12 montserrat line-height-1 text-gray-800"
         >
           <div class="server-stat mx-1 rounded-md p-6">
             <font-awesome-icon class="text-7xl" :icon="['fas', 'microchip']" />
@@ -165,13 +119,7 @@
           </div>
         </div>
         <h3
-          class="
-            text-center text-white text-46
-            font-bold
-            my-10
-            p-12
-            border-2 border-white border-solid border-l-0 border-r-0
-          "
+          class="text-center text-white text-46 font-bold my-10 p-12 border-2 border-white border-solid border-l-0 border-r-0"
         >
           Our Plugins
         </h3>
@@ -187,78 +135,36 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { Map, Island, Navbar, Members, Plugins } from "../components";
-import { ref } from "vue";
+import { ref, inject, onUnmounted, onMounted, computed, watch } from "vue";
 import bgImg from "../assets/img/bg-1.jpg";
 import bgBlurImg from "../assets/img/bg-blur.jpg";
 
-export default {
-  name: "Home",
+const bg = bgImg;
+const bgBlur = bgBlurImg;
+const landing = ref(null);
+const blur = ref(null);
+onMounted(() => {
+  loadBg(bg).then(() => {
+    landing.value.style.backgroundImage = "url(" + bg + ")";
+    blur.value.classList.add("hide");
+  });
+});
 
-  inject: ["mq"],
-
-  components: {
-    Navbar,
-    Island,
-    Members,
-    Map,
-    Plugins,
-  },
-
-  setup(props, context) {
-    const shrunkNav = ref(false);
-    const scrollPos = ref(0);
-
-    const bg = bgImg;
-    const bgBlur = bgBlurImg;
-
-    const handleScroll = (e) => {
-      shrunkNav.value = window.scrollY > 100;
-      scrollPos.value = window.scrollY;
-    };
-
-    return { shrunkNav, scrollPos, bg, bgBlur, handleScroll };
-  },
-
-  created() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-
-  mounted() {
-    const landing = this.$refs.landing;
-    const blur = this.$refs.bgBlur;
-    this.loadBg(this.bg).then(() => {
-      landing.style.backgroundImage = "url(" + this.bg + ")";
-      blur.classList.add("hide");
-    });
-  },
-
-  destroyed() {
-    window.removeEventListener("scroll", () => {});
-  },
-
-  methods: {
-    loadBg(src) {
-      return new Promise(function (resolve, reject) {
-        const image = new Image();
-        image.addEventListener("load", resolve);
-        image.addEventListener("error", reject);
-        image.src = src;
-      });
-    },
-  },
-
-  computed: {
-    isMobile() {
-      return (
-        this.mq.current == "md" ||
-        this.mq.current == "sm" ||
-        this.mq.current == "xs"
-      );
-    },
-  },
+const loadBg = (src) => {
+  return new Promise(function (resolve, reject) {
+    const image = new Image();
+    image.addEventListener("load", resolve);
+    image.addEventListener("error", reject);
+    image.src = src;
+  });
 };
+
+const mq = inject("mq");
+const isMobile = computed(() => {
+  return mq.current == "md" || mq.current == "sm" || mq.current == "xs";
+});
 </script>
 
 <style scoped>

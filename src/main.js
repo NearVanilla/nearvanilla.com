@@ -33,9 +33,8 @@ app
   .use(Vue3Mq, {
     preset: "tailwind",
   })
+  .provide("http", axios)
   .use(VueSmoothScroll);
-
-app.config.globalProperties.$http = axios;
 
 app.component("font-awesome-icon", FontAwesomeIcon);
 app.mount("#app");

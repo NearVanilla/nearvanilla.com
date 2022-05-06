@@ -27,39 +27,38 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      loaded: 0,
-    };
-  },
+<script setup>
+import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 
-  watch: {
-    loaded() {
-      const logo = this.$refs.logo;
-      const right = this.$refs.right;
-      const left = this.$refs.left;
-      const center = this.$refs.center;
+const loaded = ref(0);
+watch(loaded, () => {
+  logo.value.style.opacity = 1;
+  setTimeout(() => {
+    logo.value.classList.add("logofontglow");
+  }, 1000);
+  right.value.style.opacity = 1;
+  left.value.style.opacity = 1;
+  center.value.style.opacity = 1;
+});
 
-      logo.style.opacity = 1;
-      setTimeout(() => {
-        logo.classList.add("logofontglow");
-      }, 1000);
-      right.style.opacity = 1;
-      left.style.opacity = 1;
-      center.style.opacity = 1;
-    },
-  },
+const logo = ref(null);
+const right = ref(null);
+const left = ref(null);
+const center = ref(null);
 
-  mounted() {
-    const vue = this;
-    this.$refs.logo.addEventListener("load", () => (vue.loaded += 1));
-    this.$refs.right.addEventListener("load", () => (vue.loaded += 1));
-    this.$refs.left.addEventListener("load", () => (vue.loaded += 1));
-    this.$refs.center.addEventListener("load", () => (vue.loaded += 1));
-  },
-};
+onMounted(() => {
+  logo.value.addEventListener("load", () => (loaded.value += 1));
+  right.value.addEventListener("load", () => (loaded.value += 1));
+  left.value.addEventListener("load", () => (loaded.value += 1));
+  center.value.addEventListener("load", () => (loaded.value += 1));
+});
+
+onBeforeUnmount(() => {
+  logo.value.removeEventListener("load", () => {});
+  right.value.removeEventListener("load", () => {});
+  left.value.removeEventListener("load", () => {});
+  center.value.removeEventListener("load", () => {});
+});
 </script>
 
 <style scoped>

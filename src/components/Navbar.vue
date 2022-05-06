@@ -2,20 +2,7 @@
   <nav
     ref="nav"
     :class="{ shrunk: shrunk }"
-    class="
-      fixed
-      top-0
-      left-0
-      right-0
-      z-10
-      h-auto
-      bg-transparent
-      py-6
-      transition-padding
-      flex flex-nowrap
-      justify-start
-      px-4
-    "
+    class="fixed top-0 left-0 right-0 z-10 h-auto bg-transparent py-6 transition-padding flex flex-nowrap justify-start px-4"
     v-if="!isMobile"
   >
     <div
@@ -24,71 +11,29 @@
       :class="{ hidden: scrollPos >= 105 }"
     ></div>
     <div
-      class="
-        flex
-        items-center
-        justify-between
-        mx-auto
-        px-4
-        w-full w-540
-        md:w-960
-        lg:w-960
-        xl:w-1140
-        relative
-      "
+      class="flex items-center justify-between mx-auto px-4 w-full w-540 md:w-960 lg:w-960 xl:w-1140 relative"
     >
-      <a
-        href="#page-top"
-        class="
-          transition-all
-          duration-300
-          brand
-          inline-block
-          mr-4
-          py-1.5
-          text-xl
-          md:text-2xl
-          lg:text-5xl
-          whitespace-nowrap
-          leading-normal
-        "
+      <router-link
+        to="/home#page-top"
+        class="transition-all duration-300 brand inline-block mr-4 py-1.5 text-xl md:text-2xl lg:text-5xl whitespace-nowrap leading-normal"
         :class="shrunk ? 'minimise' : ''"
         v-smooth-scroll
       >
         Near Vanilla
-      </a>
+      </router-link>
       <div class="flex items-center text-center w-full">
         <div
-          class="
-            flex-row flex
-            pl-0
-            mb-0
-            list-none
-            ml-auto
-            montserrat
-            uppercase
-            text-white text-xs
-            lg:text-sm
-            w-full
-            justify-end
-            tracking-1
-            font-normal
-            whitespace-nowrap
-          "
+          class="flex-row flex pl-0 mb-0 list-none ml-auto montserrat uppercase text-white text-xs lg:text-sm w-full justify-end tracking-1 font-normal whitespace-nowrap"
         >
-          <a class="link px-4 py-4" href="#About" v-smooth-scroll>About</a>
-          <a class="link px-4 py-4" href="#Specifications" v-smooth-scroll
-            >Server Info</a
+          <router-link class="link px-4 py-4" to="/home#About" v-smooth-scroll>About</router-link>
+          <router-link class="link px-4 py-4" to="/home#Specifications" v-smooth-scroll
+            >Server Info</router-link
           >
-          <a class="link px-4 py-4" href="https://nearvanilla.com/apply"
+          <a class="link px-4 py-4" href="https://discord.com/invite/KHAuj5F"
             >Apply</a
           >
-          <a class="link px-4 py-4" href="https://nearvanilla.com/highscores"
-            >Highscores</a
-          >
-          <a class="link px-4 py-4" href="https://nearvanilla.com/awards"
-            >Awards</a
-          >
+          <router-link class="link px-4 py-4" to="/stats">Player Stats</router-link>
+           <router-link class="link px-4 py-4" to="/downloads">Downloads</router-link>
         </div>
       </div>
     </div>
@@ -100,17 +45,7 @@
     <div class="mx-10 flex items-center justify-between">
       <a
         href="#page-top"
-        class="
-          transition-all
-          duration-300
-          brand
-          inline-block
-          mr-4
-          py-1.5
-          whitespace-nowrap
-          text-xl
-          relative
-        "
+        class="transition-all duration-300 brand inline-block mr-4 py-1.5 whitespace-nowrap text-xl relative"
         v-smooth-scroll
       >
         Near Vanilla
@@ -125,18 +60,7 @@
     <transition name="drop-down">
       <div
         v-if="showNav"
-        class="
-         z--1
-          absolute
-          flex flex-col
-          text-white
-          tracking-wide
-          montserrat
-          text-sm
-          bg-gray-222
-          w-screen
-          left-0
-        "
+        class="z--1 absolute flex flex-col text-white tracking-wide montserrat text-sm bg-gray-222 w-screen left-0"
       >
         <a class="py-3" href="#About" v-smooth-scroll>ABOUT</a>
         <a class="py-3" href="#Specifications" v-smooth-scroll>SERVER INFO</a>
@@ -148,34 +72,22 @@
   </nav>
 </template>
 
-<script>
-export default {
-  inject: ["mq"],
-
-  props: {
-    shrunk: {
-      required: true,
-      value: Boolean,
-    },
-
-    scrollPos: {
-      required: true,
-      value: Number,
-    },
+<script setup>
+import { inject, ref, computed } from "vue";
+const mq = inject("mq");
+defineProps({
+  shrunk: {
+    required: true,
+    value: Boolean,
   },
-
-  data() {
-    return {
-      showNav: false,
-    };
+  scrollPos: {
+    required: true,
+    value: Number,
   },
+});
 
-  computed: {
-    isMobile() {
-      return this.mq.current == "sm" || this.mq.current == "xs";
-    },
-  },
-};
+const showNav = ref(false);
+const isMobile = computed(() => mq.current == "sm" || mq.current == "xs");
 </script>
 
 <style scoped>
@@ -240,7 +152,7 @@ export default {
   }
 }
 
-.z--1{
-  z-index: -1
+.z--1 {
+  z-index: -1;
 }
 </style>
