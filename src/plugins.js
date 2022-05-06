@@ -59,9 +59,9 @@ export const pluginsList = [
     type: "administration",
   },
   {
-    name: "worldborder",
+    name: "WorldBorder",
     excerpt:
-      "This is basic card with image on top, title, description and button.",
+      "Protecting our borders",
     info: "This plugin is intended to efficiently provide a border for each of your worlds, which only people granted special bypass access are allowed beyond. These passses can be bought in our  <br/> <a href='https://nearvanilla.buycraft.net/'>donation shop</a>",
     on: "bukkit",
     type: "core",

@@ -3,6 +3,6 @@ node_modules
 dist
 dist-ssr
 *.local
-public/highscores.json
+public/highscores/highscores.json
 public/awards/data/
 __pycache__
