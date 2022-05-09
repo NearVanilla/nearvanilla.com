@@ -1,0 +1,6 @@
+*
+!src/
+!public/
+!*.html
+!*.json
+!*.js

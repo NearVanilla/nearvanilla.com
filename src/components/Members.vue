@@ -26,7 +26,7 @@ const http = inject("http")
 
 onMounted(async () => await getHiscoresJson());
 const getHiscoresJson = async () => {
-  const res = await http.get("highscores.json");
+  const res = await http.get("highscores/highscores.json");
   if (res.status !== 200) {
     console.log(res);
     return;

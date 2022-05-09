@@ -30,7 +30,7 @@
             "
             @click="page = 1"
           >
-            Hiscores
+            Highscores
           </button>
         </div>
       </div>
@@ -45,7 +45,7 @@
     ></iframe>
     <iframe
       ref="frame"
-      src="/hiscores/index.html"
+      src="/highscores/index.html"
       style="width: 100vw; min-height: 100vh"
       onload="this.height=this.contentWindow.document.body.scrollHeight;"
       v-else-if="page == 1"
