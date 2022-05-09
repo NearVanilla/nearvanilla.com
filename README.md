@@ -24,7 +24,7 @@ npm run build
 
 ## Deployment
 
-Make sure to copy [highscores.json](https://nearvanilla.com/highscores.json)
+Make sure to copy [highscores.json](https://nearvanilla.com/highscores/highscores.json)
 from the live website to the `public/highscores` directory.
 
 ### Automatic
