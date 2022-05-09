@@ -1,3 +1,8 @@
-src/highscores.json
-src/awards/data/
-__pycache__/
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+public/highscores/highscores.json
+public/awards/data/
+__pycache__
