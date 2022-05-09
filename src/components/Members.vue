@@ -1,7 +1,7 @@
 <template>
-  <div ref="container" class="w-full p-2 md:p-10 montserrat text-3xl">
+  <div class="w-full p-2 md:p-10 montserrat text-3xl">
     <h3 class="mb-6">Our {{ members.length }} Members</h3>
-    <carousel :items-to-show="5" class="cursor-pointer mt-12">
+    <carousel :items-to-show="5" class="cursor-pointer mt-12" :autoplay="1500">
       <div
         v-for="member in members"
         :key="member.name"
@@ -16,29 +16,37 @@
 
 <script setup>
 import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { onMounted, ref, computed, inject } from "vue";
+import { Carousel } from "vue3-carousel";
+import { onMounted, ref, inject } from "vue";
 
 const members = ref([]);
-const membersLoaded = ref(false);
-const container = ref(null);
-const http = inject("http")
+const http = inject("http");
 
 onMounted(async () => await getHiscoresJson());
 const getHiscoresJson = async () => {
   const res = await http.get("highscores/highscores.json");
   if (res.status !== 200) {
-    console.log(res);
     return;
   }
 
-  members.value = res.data.UUID.map((x) => ({
-    icon: `https://crafatar.com/avatars/${x.UUID}?overlay=true?size=160`,
-    name: x.lastKnownName,
-  }));
+  for (const member of res.data.UUID) {
+    if (members.value.length > 20) {
+      setTimeout(
+        () =>
+          members.value.push({
+            icon: `https://crafatar.com/avatars/${member.UUID}?overlay=true?size=160`,
+            name: member.lastKnownName,
+          }),
+        500
+      );
+    } else {
+      members.value.push({
+        icon: `https://crafatar.com/avatars/${member.UUID}?overlay=true?size=160`,
+        name: member.lastKnownName,
+      });
+    }
+  }
 };
-
-const memberWidth = computed(() => container.value.clientWidth / 10 + "px");
 </script>
 
 <style scoped>
