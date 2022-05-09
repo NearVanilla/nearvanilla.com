@@ -1,72 +1,46 @@
 <template>
-  <nav
-    ref="nav"
-    :class="{ shrunk: shrunk }"
+  <nav ref="nav" :class="{ shrunk: shrunk }"
     class="fixed top-0 left-0 right-0 z-10 h-auto bg-transparent py-6 transition-padding flex flex-nowrap justify-start px-4"
-    v-if="!isMobile"
-  >
-    <div
-      class="bg-gray-222 py-0 fade-bar absolute w-full h-full"
-      :style="{ top: -(100 - scrollPos) + '%' }"
-      :class="{ hidden: scrollPos >= 105 }"
-    ></div>
-    <div
-      class="flex items-center justify-between mx-auto px-4 w-full w-540 md:w-960 lg:w-960 xl:w-1140 relative"
-    >
-      <router-link
-        to="/home#page-top"
+    v-if="!isMobile">
+    <div class="bg-gray-222 py-0 fade-bar absolute w-full h-full" :style="{ top: -(100 - scrollPos) + '%' }"
+      :class="{ hidden: scrollPos >= 105 }"></div>
+    <div class="flex items-center justify-between mx-auto px-4 w-full w-540 md:w-960 lg:w-960 xl:w-1140 relative">
+      <router-link to="/home#page-top"
         class="transition-all duration-300 brand inline-block mr-4 py-1.5 text-xl md:text-2xl lg:text-5xl whitespace-nowrap leading-normal"
-        :class="shrunk ? 'minimise' : ''"
-        v-smooth-scroll
-      >
+        :class="shrunk ? 'minimise' : ''" v-smooth-scroll>
         Near Vanilla
       </router-link>
       <div class="flex items-center text-center w-full">
         <div
-          class="flex-row flex pl-0 mb-0 list-none ml-auto montserrat uppercase text-white text-xs lg:text-sm w-full justify-end tracking-1 font-normal whitespace-nowrap"
-        >
+          class="flex-row flex pl-0 mb-0 list-none ml-auto montserrat uppercase text-white text-xs lg:text-sm w-full justify-end tracking-1 font-normal whitespace-nowrap">
           <router-link class="link px-4 py-4" to="/home#About" v-smooth-scroll>About</router-link>
-          <router-link class="link px-4 py-4" to="/home#Specifications" v-smooth-scroll
-            >Server Info</router-link
-          >
-          <a class="link px-4 py-4" href="https://discord.com/invite/KHAuj5F"
-            >Apply</a
-          >
+          <router-link class="link px-4 py-4" to="/home#Specifications" v-smooth-scroll>Server Info</router-link>
+          <a class="link px-4 py-4" href="https://discord.com/invite/KHAuj5F">Apply</a>
           <router-link class="link px-4 py-4" to="/stats">Player Stats</router-link>
-           <router-link class="link px-4 py-4" to="/downloads">Downloads</router-link>
+          <router-link class="link px-4 py-4" to="/downloads">Downloads</router-link>
         </div>
       </div>
     </div>
   </nav>
-  <nav
-    class="fixed top-0 left-0 right-0 z-10 h-auto py-2 px-4 bg-gray-222"
-    v-else
-  >
+  <nav class="fixed top-0 left-0 right-0 z-10 h-auto py-2 px-4 bg-gray-222" v-else>
     <div class="mx-10 flex items-center justify-between">
-      <a
-        href="#page-top"
+      <router-link to="/home#page-top"
         class="transition-all duration-300 brand inline-block mr-4 py-1.5 whitespace-nowrap text-xl relative"
-        v-smooth-scroll
-      >
+        v-smooth-scroll>
         Near Vanilla
-      </a>
-      <div
-        class="custom-yellow p-3 rounded text-xs leading-none cursor-pointer"
-        @click="showNav = !showNav"
-      >
+      </router-link>
+      <div class="custom-yellow p-3 rounded text-xs leading-none cursor-pointer" @click="showNav = !showNav">
         <font-awesome-icon class="text-gray-900" :icon="['fas', 'bars']" />
       </div>
     </div>
     <transition name="drop-down">
-      <div
-        v-if="showNav"
-        class="z--1 absolute flex flex-col text-white tracking-wide montserrat text-sm bg-gray-222 w-screen left-0"
-      >
-        <a class="py-3" href="#About" v-smooth-scroll>ABOUT</a>
-        <a class="py-3" href="#Specifications" v-smooth-scroll>SERVER INFO</a>
-        <a class="py-3" href="https://nearvanilla.com/apply">APPLY</a>
-        <a class="py-3" href="https://nearvanilla.com/highscores">HIGHSCORES</a>
-        <a class="py-3" href="https://nearvanilla.com/awards">AWARDS</a>
+      <div v-if="showNav"
+        class="z--1 absolute flex flex-col text-white tracking-wide montserrat text-sm bg-gray-222 w-screen left-0">
+        <router-link class="py-3" to="/home#About" v-smooth-scroll>ABOUT</router-link>
+        <router-link class="py-3" to="/home#Specifications" v-smooth-scroll>SERVER INFO</router-link>
+        <a class="link px-4 py-4" href="https://discord.com/invite/KHAuj5F">APPLY</a>
+        <router-link class="py-3" to="/stats">PLAYER STATS</router-link>
+        <router-link class="py-3" to="/downloads">DOWNLOADS</router-link>
       </div>
     </transition>
   </nav>
@@ -147,6 +121,7 @@ const isMobile = computed(() => mq.current == "sm" || mq.current == "xs");
   from {
     margin-top: -100%;
   }
+
   to {
     margin-top: 0;
   }

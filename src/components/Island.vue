@@ -1,25 +1,25 @@
 <template>
   <div class="relative block">
     <img
-      src="/img/island/leftIsland.png"
+      :src="leftIsland"
       alt="logoLeftIsland"
       ref="left"
       class="relative left-island leftislandfloat"
     />
     <img
-      src="/img/island/rightIsland.png"
+      :src="rightIsland"
       alt="logoRightIsland"
       ref="right"
       class="absolute right-island rightislandfloat"
     />
     <img
-      src="/img/island/middleIslandsWithClouds.png"
+      :src="middleIsland"
       alt="logoMiddleIsland"
       ref="center"
       class="absolute center-island centerislandfloat"
     />
     <img
-      src="/img/island/NVText2.png"
+      :src="text"
       alt="logoText"
       ref="logo"
       class="absolute logo opacity-0"
@@ -29,6 +29,10 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import leftIsland from "@/assets/img/island/leftIsland.webp"
+import rightIsland from "@/assets/img/island/rightIsland.webp"
+import middleIsland from "@/assets/img/island/middleIslandsWithClouds.webp"
+import text from "@/assets/img/island/NVText2.webp"
 
 const loaded = ref(0);
 watch(loaded, () => {

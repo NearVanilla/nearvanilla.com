@@ -55,8 +55,8 @@
 
 <script setup>
 import { ref } from "vue";
-import bgImg from "../assets/img/bg-1.jpg";
-import bgBlurImg from "../assets/img/bg-blur.jpg";
+import bgImg from "../assets/img/bg-1.webp";
+import bgBlurImg from "../assets/img/bg-blur.webp";
 
 const bg = bgImg;
 const bgBlur = bgBlurImg;

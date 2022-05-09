@@ -13,7 +13,7 @@
         <div class="flex flex-wrap justify-center items-center w-full h-full">
           <island style="width: 900px; margin-top: -100px" v-if="!isMobile" />
           <div v-else class="flex items-center justify-center mt-20 h-4/5">
-            <img src="/img/logo.png" alt="logo" class="h-full" />
+            <img :src="logo" alt="logo" class="h-full" />
           </div>
           <a href="#About" class="scroll-down block" v-smooth-scroll></a>
         </div>
@@ -52,7 +52,7 @@
           <div
             class="w-full md:w-1/2 flex items-center justify-center md:justify-end"
           >
-            <img src="/img/creativity.png" class="rounded-full w-4/5" />
+            <img :src="creativity" class="rounded-full w-4/5" />
           </div>
         </div>
         <members />
@@ -136,15 +136,19 @@
 </template>
 
 <script setup>
-import { Map, Island, Navbar, Members, Plugins } from "../components";
-import { ref, inject, onUnmounted, onMounted, computed, watch } from "vue";
-import bgImg from "../assets/img/bg-1.jpg";
-import bgBlurImg from "../assets/img/bg-blur.jpg";
+import { Map, Island, Members, Plugins } from "../components";
+import { ref, inject, onMounted, computed, watch } from "vue";
+
+import bgImg from "../assets/img/bg-1.webp";
+import bgBlurImg from "../assets/img/bg-blur.webp";
+import logo from "../assets/img/logo.webp"
+import creativity from "../assets/img/creativity.webp"
 
 const bg = bgImg;
 const bgBlur = bgBlurImg;
 const landing = ref(null);
 const blur = ref(null);
+
 onMounted(() => {
   loadBg(bg).then(() => {
     landing.value.style.backgroundImage = "url(" + bg + ")";

@@ -74,7 +74,7 @@ const pluginsFiltered = computed(() =>
 const getIconUrl = (str) => {
   str = str.replace(/\s/g, "");
   str = str.toLowerCase();
-  return `/img/pluginIcons/${str}.png`;
+  return `/img/pluginIcons/${str}.webp`;
 };
 </script>
 
