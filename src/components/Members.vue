@@ -1,7 +1,7 @@
 <template>
   <div class="w-full p-2 md:p-10 montserrat text-3xl">
     <h3 class="mb-6">Our {{ members.length }} Members</h3>
-    <carousel :items-to-show="5" class="cursor-pointer mt-12" :autoplay="1500">
+    <carousel v-if="members.length !== 0" :items-to-show="5" class="cursor-pointer mt-12" :autoplay="1500">
       <div
         v-for="member in members"
         :key="member.name"
