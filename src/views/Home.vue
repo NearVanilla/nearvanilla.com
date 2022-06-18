@@ -40,7 +40,7 @@
               our time, think before we act, and have fun together! We respect
               each other and our differences. We act and communicate responsibly
               and take responsibility for our actions in game. It is a server
-              free from griefing, thieving and moderators.
+              free from griefing and thieving, and we have moderators to ensure that.
 
               <br /><br />
 
