@@ -1,6 +1,6 @@
 <template>
   <div class="w-full p-2 md:p-10 montserrat text-3xl">
-    <h3 class="mb-6">Our {{ members.length }} Members</h3>
+    <h3 class="mb-6">Our {{ members.length }} Active Members</h3>
     <carousel v-if="members.length !== 0" :items-to-show="5" class="cursor-pointer mt-12" :autoplay="1500">
       <div
         v-for="member in members"
@@ -29,7 +29,11 @@ const getHiscoresJson = async () => {
     return;
   }
 
-  for (const member of res.data.UUID) {
+  const all_members = res.data.UUID;
+  const active_member_cutoff_date = new Date(Date.now() - 32 * 24 * 60 * 60 * 1000).getTime();
+  const active_members = all_members.filter(member => member.lastPlayed >= active_member_cutoff_date);
+
+  for (const member of active_members) {
     if (members.value.length > 20) {
       setTimeout(
         () =>
