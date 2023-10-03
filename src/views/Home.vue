@@ -128,7 +128,8 @@
       <footer class="bg-2b m-0 p-6">
         <div>
           <p class="text-white mb-2">© Near Vanilla. All rights reserved.</p>
-          <p class="text-gray-500">Play @ play.nearvanilla.com</p>
+          <p class="text-gray-500 mb-2">Play @ play.nearvanilla.com</p>
+          <p class="text-white">We are NOT affiliated with Mojang AB or Microsoft.</p>
         </div>
       </footer>
     </div>
