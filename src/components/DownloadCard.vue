@@ -26,7 +26,7 @@
 <script setup>
 import { computed } from "vue";
 
-const props = defineProps(["season", "size", "date", "version"]);
+const props = defineProps(["season", "size", "date", "version", "filename"]);
 const imgUrl = computed(() => `/img/spawn/s${props.season}.webp`);
-const downloadUrl = computed(() => `https://files.nearvanilla.com/worlds/NearVanillaS${props.season}.zip`);
+const downloadUrl = computed(() => `https://files.nearvanilla.com/worlds/${props.filename}`);
 </script>
